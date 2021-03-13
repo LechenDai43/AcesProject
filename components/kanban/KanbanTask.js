@@ -6,7 +6,7 @@ class KanbanTask extends Component {
         this.state = {
             title: "",
             duedate: "",
-            estimate: -1,
+            difficulty: -1,
             status: ""
         };
     }
