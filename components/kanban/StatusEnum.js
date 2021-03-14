@@ -4,7 +4,8 @@ const StatusEnum = [
         'Done',
         'Failed',
         'Requested',
-        'Overdue'
+        'Overdue',
+        'Freeze'
 ];
 
 export default StatusEnum;

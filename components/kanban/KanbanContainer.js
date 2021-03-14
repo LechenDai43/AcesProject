@@ -5,6 +5,7 @@ import KanbanTab from "./KanbanTab";
 import { StyleSheet, Text, View } from 'react-native';
 import {Card, ButtonGroup} from 'react-native-elements';
 import Footer from "../common/Footer";
+import KanbanBoxList from "./KanbanBoxList";
 
 
 export default class KanbanContainer extends React.Component {
@@ -13,8 +14,21 @@ export default class KanbanContainer extends React.Component {
         this.state = {
             "items": [],
             "tabs": [],
+            "boxList": new KanbanBoxList(this),
             "keyStatus": "Todo",
-            "index": 0
+            "index": 0,
+            "added": false,
+            "addedTab": null,
+            "newTabFunction": (tabName) => {
+                this.state.index = 3;
+                this.state.added = true;
+                this.state.keyStatus = tabName;
+                var newTab = new KanbanTab();
+                newTab.title = tabName;
+                this.state.addedTab = newTab;
+                this.forceUpdate();
+
+            }
         }
         let rawdata = "{\n" +
             "  \"tasks\": [\n" +
@@ -107,10 +121,17 @@ export default class KanbanContainer extends React.Component {
                 tabs.push({element: () => tab2});
             }
         }
+        if (this.state.added) {
+            var tab3 = this.state.addedTab;
+            tabs.push({element: () => tab3});
+        }
         return tabs;
     }
 
     renderTasks() {
+        if (this.state.index < 2) {
+            this.state.added = false;
+        }
         if (this.state.index !== 2) {
             var tasks = [];
             for (var i = 0; i < this.state.items.length; i++) {
@@ -122,16 +143,23 @@ export default class KanbanContainer extends React.Component {
             return tasks;
         }
         else {
-            return new KanbanBoxList();
+            return this.state.boxList.render();
         }
     }
 
-
+    openMoreTab(tabName) {
+        this.setState({"index": 3});
+        this.setState({"keyStatus": tabName});
+        var newTab = new KanbanTab();
+        newTab.setState({"title": tabName});
+        this.setState({"addedTab": newTab});
+        this.renderTasks();
+    }
 
     render(): React.ReactNode {
         const updateIndex = (index) => {
             var n = index;
-            console.log(n);
+
             this.setState({"index": index});
             if (index == 0) {
                 this.setState({"keyStatus": "Todo"})
@@ -139,7 +167,6 @@ export default class KanbanContainer extends React.Component {
             else if (index == 1) {
                 this.setState({"keyStatus": "In Progress"})
             }
-            console.log(this.state.keyStatus);
             // this.index = index;
         }
         return (
