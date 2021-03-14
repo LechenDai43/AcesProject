@@ -5,7 +5,9 @@ import {CalendarOutlined, BankOutlined, CarryOutOutlined} from "@ant-design/icon
 class Footer extends Component {
 
     renderIcons() {
-        var list = [{element: () => <CalendarOutlined/>}, {element: () => <BankOutlined/>}, {element: () => <CarryOutOutlined/>}];
+        var list = [{element: () => new Icon(this)},
+            {element: () => new Icon(this)},
+            {element: () => new Icon(this)}];
         return list;
     }
 

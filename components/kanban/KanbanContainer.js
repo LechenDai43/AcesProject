@@ -111,37 +111,43 @@ export default class KanbanContainer extends React.Component {
     }
 
     renderTasks() {
-        var tasks = [];
-        for (var i = 0; i < this.state.items.length; i++) {
-            var task = this.state.items[i];
-            if (task.state.status === this.state.keyStatus) {
-                tasks.push(task.render());
+        if (this.state.index !== 2) {
+            var tasks = [];
+            for (var i = 0; i < this.state.items.length; i++) {
+                var task = this.state.items[i];
+                if (task.state.status === this.state.keyStatus) {
+                    tasks.push(task.render());
+                }
             }
+            return tasks;
         }
-        return tasks;
+        else {
+            return new KanbanBoxList();
+        }
     }
 
-    const updateIndex = (index) => {
-        var n = index;
-        console.log(n);
-        this.setState({"index": index});
-        if (index == 0) {
-            this.setState({"keyStatus": "Todo"})
-        }
-        else if (index == 1) {
-            this.setState({"keyStatus": "In Progress"})
-        }
-        // this.index = index;
-    }
+
 
     render(): React.ReactNode {
-        const {selectedIndex} = 0;
+        const updateIndex = (index) => {
+            var n = index;
+            console.log(n);
+            this.setState({"index": index});
+            if (index == 0) {
+                this.setState({"keyStatus": "Todo"})
+            }
+            else if (index == 1) {
+                this.setState({"keyStatus": "In Progress"})
+            }
+            console.log(this.state.keyStatus);
+            // this.index = index;
+        }
         return (
             <Card>
                 <ButtonGroup buttons={this.renderTabs()}
-                             onPress={this.updateIndex}
+                             onPress={updateIndex}
                 />
-                <Card>
+                <Card id={"task-tab"}>
                     {this.renderTasks()}
                 </Card>
             </Card>
