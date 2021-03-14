@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
+import {Button, ButtonGroup, Icon} from "react-native-elements";
+import {CalendarOutlined, BankOutlined, CarryOutOutlined} from "@ant-design/icons";
 
 class Footer extends Component {
-    render(): React.ReactNode {
+
+    renderIcons() {
+        var list = [{element: () => <CalendarOutlined/>}, {element: () => <BankOutlined/>}, {element: () => <CarryOutOutlined/>}];
+        return list;
+    }
+
+    render(){
         return (
-            <div>
-                <button>Calendar</button>
-                <button>Home</button>
-                <button>Kanban</button>
-            </div>
+            <ButtonGroup
+                buttons={this.renderIcons()}
+            />
         );
     }
 }

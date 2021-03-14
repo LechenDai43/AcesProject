@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 
+import { StyleSheet, Text, View } from 'react-native';
+import {Card} from 'react-native-elements';
+
 class KanbanTask extends Component {
-    constructor(prop) {
-        super(prop);
+    constructor() {
+        super("");
         this.state = {
             title: "",
             duedate: "",
@@ -11,12 +14,12 @@ class KanbanTask extends Component {
         };
     }
 
-    render(): React.ReactNode {
+    render(){
         return (
-            <div>
-                <h3 className="kanban-task-title">{this.state.title}</h3>
-                <h5 className="kanban-task-duedate">{this.state.duedate}</h5>
-            </div>
+            <Card>
+                <Text className="kanban-task-title">{this.state.title}</Text>
+                <Text className="kanban-task-duedate">{this.state.duedate}</Text>
+            </Card>
         );
     }
 }
