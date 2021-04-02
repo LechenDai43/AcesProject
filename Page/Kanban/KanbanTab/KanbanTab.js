@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import KanbanTabStyles from "./KanbanTabStyle";
 
 class KanbanTab extends Component {
@@ -9,9 +9,9 @@ class KanbanTab extends Component {
 
     render() {
         return (
-            <View>
-
-            </View>
+            <Text>
+                {this.props.title}
+            </Text>
         );
     }
 }
