@@ -18,9 +18,9 @@ class Footer extends Component {
     }
 
     changePage(key) {
-        let {page, allPage} = this.state;
+        let {current, allPage} = this.state;
         // If set the page to the current page or an unknown page
-        if (key === page || (!allPage.has(key))) {
+        if (key === current || (!allPage.has(key))) {
             return false;
         }
         // If set the page to a valid page
@@ -31,7 +31,11 @@ class Footer extends Component {
     }
 
     render() {
-        let {page, allPage} = this.state;
+        let {current, allPage} = this.state;
+        let page = current;
+        console.log(page);
+        let uncheckedIcon = [FooterStyles.icon];
+        let checkedIcon = [FooterStyles.icon, FooterStyles.checked];
         return (
             <View
                 style={[FooterStyles.parent]}
@@ -39,27 +43,27 @@ class Footer extends Component {
                 <Icon.Button
                     name={"table"}
                     onPress={() => this.changePage("Calendar")}
-                    style={[FooterStyles.icon]}
+                    style={page === "Calendar"? checkedIcon: uncheckedIcon}
                 />
                 <Icon.Button
                     name={"carryout"}
                     onPress={() => this.changePage("Kanban")}
-                    style={[FooterStyles.icon]}
+                    style={page === "Kanban"? checkedIcon: uncheckedIcon}
                 />
                 <Icon.Button
                     name={"home"}
                     onPress={() => this.changePage("Home")}
-                    style={[FooterStyles.icon]}
+                    style={page === "Home"? checkedIcon: uncheckedIcon}
                 />
                 <Icon.Button
                     name={"dashboard"}
                     onPress={() => this.changePage("Timer")}
-                    style={[FooterStyles.icon]}
+                    style={page === "Timer"? checkedIcon: uncheckedIcon}
                 />
                 <Icon.Button
                     name={"user"}
                     onPress={() => this.changePage("Account")}
-                    style={[FooterStyles.icon]}
+                    style={page === "Account"? checkedIcon: uncheckedIcon}
                 />
             </View>
         );

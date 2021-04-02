@@ -17,6 +17,9 @@ const FooterStyles = StyleSheet.create({
         bottom: 0,
         alignItems: "center",
         flexWrap: "wrap"
+    },
+    checked: {
+        backgroundColor: "#78cd87",
     }
 });
 
