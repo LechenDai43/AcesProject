@@ -1,15 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { Component } from "react";
 import { StyleSheet, Text, View } from 'react-native';
 import KanbanContainer from "./components/kanban/KanbanContainer";
+import Footer from "./Page/Footer/Footer";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <KanbanContainer/>
-    </View>
-  );
+class App extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    changePage(page) {
+        console.log(page);
+    }
+
+    render(): React.ReactNode {
+        return (
+            <View style={styles.container}>
+                <KanbanContainer/>
+                <Footer
+                    redirect={(page) => this.changePage(page)}
+                />
+            </View>
+        );
+    }
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -19,3 +34,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App;
