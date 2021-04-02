@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
 import Icon from "react-native-vector-icons/AntDesign";
 import FooterStyles from "./FooterStyle";
 
@@ -33,7 +33,6 @@ class Footer extends Component {
     render() {
         let {current, allPage} = this.state;
         let page = current;
-        console.log(page);
         let uncheckedIcon = [FooterStyles.icon];
         let checkedIcon = [FooterStyles.icon, FooterStyles.checked];
         return (

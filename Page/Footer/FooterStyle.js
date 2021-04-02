@@ -1,16 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet} from 'react-native';
 
 const FooterStyles = StyleSheet.create({
     icon: {
-        backgroundColor: "#abefba",
+        backgroundColor: "#abbaef",
         height: 60,
         paddingRight: 22,
         paddingLeft: 26
     },
     parent: {
         flexDirection: "row",
-        backgroundColor: "#abefba",
+        backgroundColor: "#abbaef",
         position: "absolute",
         left: 0,
         right: 0,
@@ -19,7 +19,7 @@ const FooterStyles = StyleSheet.create({
         flexWrap: "wrap"
     },
     checked: {
-        backgroundColor: "#78cd87",
+        backgroundColor: "#7887cd",
     }
 });
 

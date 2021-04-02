@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
-import KanbanStyles from "./KanbanStyle";
+import KanbanTabStyles from "./KanbanTabStyle";
 
-class Kanban extends Component {
+class KanbanTab extends Component {
     constructor(props) {
         super(props);
     }
@@ -16,4 +16,4 @@ class Kanban extends Component {
     }
 }
 
-export default Kanban;
+export default KanbanTab;

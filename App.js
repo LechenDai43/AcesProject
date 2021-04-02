@@ -11,12 +11,12 @@ class App extends Component {
 
     changePage(page) {
         console.log(page);
+        this.forceUpdate();
     }
 
     render(): React.ReactNode {
         return (
             <View style={styles.container}>
-                <KanbanContainer/>
                 <Footer
                     redirect={(page) => this.changePage(page)}
                 />

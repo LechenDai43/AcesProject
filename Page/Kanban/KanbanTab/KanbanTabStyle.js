@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet} from 'react-native';
 
-const KanbanStyles = StyleSheet.create({
+const KanbanTabStyles = StyleSheet.create({
 
 });
 
-export default KanbanStyles;
+export default KanbanTabStyles;
