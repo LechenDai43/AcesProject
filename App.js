@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from 'react-native';
-import KanbanContainer from "./components/kanban/KanbanContainer";
 import Footer from "./Page/Footer/Footer";
 import Kanban from "./Page/Kanban/Kanban";
+import Header from "./Page/Header/Header";
 
 class App extends Component {
     constructor(props) {
@@ -17,6 +17,7 @@ class App extends Component {
     render(): React.ReactNode {
         return (
             <View style={styles.container}>
+                <Header/>
                 <Kanban
                     openTask={(taskID) => this.changePage("Task", taskID)}
                 />
