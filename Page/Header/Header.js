@@ -9,19 +9,31 @@ class Header extends Component {
 
     render() {
         return (
-            <View>
-                <Text>
+            <View
+                style={[HeaderStyles.parent]}
+            >
+                <Text
+                    style={[HeaderStyles.logo]}
+                >
                     Efficiency++
                 </Text>
-                <View>
-                    <TouchableHighlight>
+                <View
+                    style={[HeaderStyles.rightEdge]}
+                >
+                    <TouchableHighlight
+                        style={[HeaderStyles.rightTouch]}
+                        onPress={() => this.props.addHandler}
+                    >
                         <Text>
-                            Add Tasks...
+                            Add Tasks
                         </Text>
                     </TouchableHighlight>
-                    <TouchableHighlight>
+                    <TouchableHighlight
+                        style={[HeaderStyles.rightTouch]}
+                        onPress={() => this.props.importHandler()}
+                    >
                         <Text>
-                            Import Tasks...
+                            Import Tasks
                         </Text>
                     </TouchableHighlight>
                 </View>

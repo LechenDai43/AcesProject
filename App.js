@@ -17,7 +17,10 @@ class App extends Component {
     render(): React.ReactNode {
         return (
             <View style={styles.container}>
-                <Header/>
+                <Header
+                    addHandler={() => this.changePage("Add", -1)}
+                    importHandler={() => this.changePage("Import", -1)}
+                />
                 <Kanban
                     openTask={(taskID) => this.changePage("Task", taskID)}
                 />
