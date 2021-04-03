@@ -11,7 +11,7 @@ class Footer extends Component {
         super(props);
         this.state = {
             // This variable is holding the current page
-            current: "Home",
+            current: this.props.page,
             // This variable is holding all the pages in this app
             allPage: new Set(["Home", "Calendar", "Kanban", "Timer", "Account"])
         };
