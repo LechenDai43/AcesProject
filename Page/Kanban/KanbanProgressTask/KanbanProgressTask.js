@@ -12,8 +12,8 @@ class KanbanProgressTask extends Component {
             <View style = {KanbanProgressTaskStyles.task}>
                 <Text style = {KanbanProgressTaskStyles.title}>{this.props.detail.title}</Text>
                 <View>
-                    <Text>{"Deadline: " + this.props.detail.deadline}</Text>
-                    <Text>{"Progress: " + this.props.detail.progress + "/" + this.props.detail.duration}</Text>
+                    <Text style = {KanbanProgressTaskStyles.font}>{"Deadline: " + this.props.detail.deadline}</Text>
+                    <Text style = {KanbanProgressTaskStyles.font}>{"Progress: " + this.props.detail.progress + "/" + this.props.detail.duration}</Text>
                 </View>
             </View>
         );

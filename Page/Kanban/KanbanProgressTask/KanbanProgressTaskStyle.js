@@ -4,19 +4,19 @@ import { StyleSheet} from 'react-native';
 const KanbanProgressTaskStyles = StyleSheet.create({
     task : {
         alignItems: "center",
-        // marginVertical: 20,
         justifyContent:'space-between',
-        // marginTop:20,
-        // backgroundColor: '#DEF9D7', 
+        marginTop:5,        
     },
     title :{
+        alignContent:'center',
         fontSize: 20,
         fontWeight: "bold",
         fontFamily: "Cochin"
     },
-    // font :{
-
-    // }
+    font :{
+        alignContent:'center',
+        fontSize: 15,
+    }
 
 
 });

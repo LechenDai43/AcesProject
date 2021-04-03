@@ -1,21 +1,31 @@
+import zIndex from '@material-ui/core/styles/zIndex';
 import React from 'react';
 import { StyleSheet} from 'react-native';
 
 const KanbanTabBoxStyle = StyleSheet.create({
     tabBox : {
-        display:'flex',
-        marginTop:20,
-        backgroundColor: "#efbaab",
-        flexDirection: 'row',
-        justifyContent:'space-evenly',
-        flexWrap:'wrap',
+        position:'absolute',
+        alignItems:'center',
+        backgroundColor: "#DEF9D7",
         padding: 10,
-      
+        height: 250,
+        width:200,
+        justifyContent:'center',
+        marginBottom:20,
+        top: 160,
+        left:125,
+        right:125,
+        borderColor:'#EEE1FA',
+        borderWidth:5,
+        borderRadius: 30,
+        zIndex:2,
+
     },
     tabs: {
-        fontSize:17,
+        fontSize:18,
         fontWeight: "bold",
-        fontFamily:'Arial'
+        fontFamily:'Arial',
+        padding: 5,
     }
 });
 

@@ -2,8 +2,17 @@ import React from 'react';
 import { StyleSheet} from 'react-native';
 
 const KanbanStyles = StyleSheet.create({
+    container:{
+        position:'absolute',
+        left:0,
+        right:0,
+        top:120,
+        flexWrap: "wrap",
+        height: 745,
+        // alignItems:'center'
+    },
     renderTabs : {
-        backgroundColor: "#efbaab",
+        backgroundColor: "#baefab",
         marginBottom:30,
         marginTop:0,
         borderColor: "#20232a",
@@ -12,13 +21,26 @@ const KanbanStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'space-evenly',
         flexWrap:'wrap',
+        height:30
     },
     renderTasks: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent:'center',
-        alignItems:'center'
-    }
+        
+    },
+    tasks:{
+        alignItems:'center',
+        // justifyContent:'center',
+    }, 
+    taskItems: {
+        // borderColor:'black',
+        // borderWidth:2,
+        width: 400,
+        marginBottom: 5,
+    },
+    checkedTab:{
+        backgroundColor: "#FFFFFF",
+    },
 
 });
 
