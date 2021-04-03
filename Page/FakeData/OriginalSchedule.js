@@ -1,4 +1,4 @@
-const OriginalSchedule = [
+let OriginalSchedule = [
     {
         title: "Sprint 5 Team Presentation",
         taskId: 9,

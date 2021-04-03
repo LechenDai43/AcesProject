@@ -26,19 +26,20 @@ class GanttHourlyBlock extends Component {
 
     render() {
         return (
-            <View>
-                <Text>{this.props.hour}</Text>
-                <TouchableHighlight
-                    onPress={() => this.handleClick()}
-                >
-                    {this.renderContent()}
-                </TouchableHighlight>
-            </View>
+
+            <TouchableHighlight
+                onPress={() => this.handleClick()}
+            >
+                <View>
+                    <Text>{this.props.hour}</Text>
+                        {this.renderContent()}
+                </View>
+            </TouchableHighlight>
         );
     }
 
     handleClick() {
-
+        this.props.handler(this.props.hour);
     }
 }
 

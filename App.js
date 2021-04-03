@@ -41,7 +41,7 @@ class App extends Component {
                     addHandler={() => this.changePage("Add", -1)}
                     importHandler={() => this.changePage("Import", -1)}
                 />
-                <Gantt schedule={this.state.schedule}/>
+                <Gantt/>
                 <Footer
                     redirect={(page) => this.changePage(page, -1)}
                     page={page}

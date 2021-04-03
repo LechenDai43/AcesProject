@@ -3,6 +3,8 @@ import { View, TouchableHighlight, Text } from 'react-native';
 import CalendarPicker from "react-native-calendar-picker";
 import GanttStyles from "./GanttStyle";
 import GanttDailyView from "./GanttDailyView/GanttDailyView";
+import OriginalSchedule from "../FakeData/OriginalSchedule";
+import GanttBlockEditor from "./GanttBlockEditor/GanttBlockEditor";
 
 const months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 class Gantt extends Component {
@@ -29,8 +31,8 @@ class Gantt extends Component {
         else if (dailyMode === 1) {
             let {year, month, day} = this.state;
             let dailySchedule = [];
-            for (let i = 0; i < this.props.schedule.length; i++) {
-                let event = this.props.schedule[i];
+            for (let i = 0; i < OriginalSchedule.length; i++) {
+                let event = OriginalSchedule[i];
                 if (event.date.getFullYear() === year && event.date.getMonth() === month && event.date.getDate() === day) {
                     dailySchedule.push(event);
                 }
@@ -44,6 +46,31 @@ class Gantt extends Component {
                   day={day}
                   back={() => this.setOffDaily()}
               />
+            );
+        }
+        else if (dailyMode === 2) {
+            let {year, month, day, hour} = this.state;
+            let content = null;
+            let booked = 0;
+            for (let i = 0; i < OriginalSchedule.length; i++) {
+                let event = OriginalSchedule[i];
+                if (event.date.getFullYear() === year && event.date.getMonth() === month && event.date.getDate() === day && event.date.getHours() === hour) {
+                    content = event;
+                    booked = 1;
+                    break;
+                }
+            }
+
+            return (
+                <GanttBlockEditor
+                    booked={booked}
+                    content={content}
+                    year={year}
+                    month={month}
+                    day={day}
+                    hour={hour}
+                    return={() => this.setOffHourly()}
+                />
             );
         }
     }
@@ -77,7 +104,10 @@ class Gantt extends Component {
     }
 
     selectHour (hour) {
-
+        this.setState({
+            hour: hour,
+            dailyMode: 2
+        })
     }
 
     setOffDaily() {
@@ -85,6 +115,15 @@ class Gantt extends Component {
         if (dailyMode === 1) {
             this.setState({
                 dailyMode: 0
+            });
+        }
+    }
+
+    setOffHourly() {
+        let {dailyMode} = this.state;
+        if (dailyMode === 2) {
+            this.setState({
+                dailyMode: 1
             });
         }
     }
