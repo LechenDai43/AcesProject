@@ -10,7 +10,7 @@ class KanbanTaskSimpleView extends Component {
 
     render(){
         return (
-            <View>
+            <View style = {KanbanTaskSimpleViewStyle.detail}>
                 <KanbanProgressTask
                     detail={{
                         title: this.props.detail.title,
@@ -32,15 +32,15 @@ class KanbanTaskSimpleView extends Component {
                 <TouchableHighlight
                     onPress={() => this.props.close()}
                 >
-                    <Text>
-                        Close
+                    <Text style = {KanbanTaskSimpleViewStyle.font}>
+                        CLOSE
                     </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                     onPress={() => this.props.redirect()}
                 >
-                    <Text>
-                        Detail
+                    <Text style = {KanbanTaskSimpleViewStyle.font}>
+                        DETAIL
                     </Text>
                 </TouchableHighlight>
 
@@ -48,5 +48,6 @@ class KanbanTaskSimpleView extends Component {
         );
     }
 }
+
 
 export default KanbanTaskSimpleView;

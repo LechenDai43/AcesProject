@@ -163,16 +163,16 @@ class Kanban extends Component {
     render() {
         return (
             <View>
-                <View>
+                <View style={KanbanStyles.renderTabs}>
                     {this.renderTabs()}
                 </View>
 
                 <View>
                     {this.renderTasks()}
                 </View>
-
-                {this.renderBoxList()}
+                
                 {this.renderTaskSimpleView()}
+                {this.renderBoxList()}
 
             </View>
         );

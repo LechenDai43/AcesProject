@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
-import KanbanTabStyles from "./KanbanTabStyle";
+import { Text} from 'react-native';
+import KanbanTabStyles from "./KanbanTabStyle"
 
 class KanbanTab extends Component {
     constructor(props) {
@@ -9,11 +9,12 @@ class KanbanTab extends Component {
 
     render() {
         return (
-            <Text>
+            <Text style={KanbanTabStyles.tabs}>
                 {this.props.title}
             </Text>
         );
     }
 }
+
 
 export default KanbanTab;
