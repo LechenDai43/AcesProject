@@ -5,7 +5,8 @@ const KanbanTabStyles = StyleSheet.create({
     tabs:{
         fontSize:18,
         fontWeight: "bold",
-        fontFamily:'Arial'
+        fontFamily:'Arial',
+        padding: 5,
     }
 });
 

@@ -7,7 +7,7 @@ const KanbanTaskSimpleViewStyle = StyleSheet.create({
         backgroundColor: '#DEF9D7',
         fontSize: 50,
         margin:20,
-        padding:10,
+        padding:5,
     },
 
     font : {
