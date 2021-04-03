@@ -31,10 +31,44 @@ class App extends Component {
     }
 
     changePage(page, taskId) {
-
+        if (taskId < 0) {
+            this.setState({
+                page: page
+            });
+        }
+        else {
+            this.setState({
+                page: page,
+                taskId: taskId
+            })
+        }
     }
 
-    render(): React.ReactNode {
+    renderPage() {
+        let {page} = this.state;
+        if (page === "Import") {
+            return (
+                <Import/>
+            );
+        }
+        else if (page === "Calendar") {
+            return (
+                <Gantt/>
+            );
+        }
+        else if (page === "Kanban") {
+            return (
+                <Kanban/>
+            )
+        }
+        else {
+            return (
+                <Kanban/>
+            )
+        }
+    }
+
+    render() {
         let {page} = this.state;
         return (
             <View style={styles.container}>
@@ -42,9 +76,9 @@ class App extends Component {
                     addHandler={() => this.changePage("Add", -1)}
                     importHandler={() => this.changePage("Import", -1)}
                 />
-                <Import/>
+                {this.renderPage()}
                 <Footer
-                    redirect={(page) => this.changePage(page, -1)}
+                    redirect={(p) => this.changePage(p, -1)}
                     page={page}
                 />
             </View>
