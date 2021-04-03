@@ -7,6 +7,7 @@ import KanbanProgressTask from "./KanbanProgressTask/KanbanProgressTask";
 import KanbanStyles from "./KanbanStyle";
 import KanbanTabBox from "./KanbanTabBox/KanbanTabBox";
 import KanbanTaskSimpleView from "./KanbanTaskSimpleView/KanbanTaskSimpleView";
+import { ScrollView} from 'react-native';
 
 let tasks = [];
 for (let ii = 0; ii < OriginTasks.length; ii += 1) {
@@ -30,18 +31,20 @@ class Kanban extends Component {
             // This variable holds what the list of boxes is for
             mode: "Unknown",
             // This variable holds the id of the pressed task
-            taskId: -1
+            taskId: -1,
+            listHeight: 0,
         }
     }
 
     // This renders the clickable tabs
     renderTabs () {
-        let {toggledTabs} = this.state;
+        let {toggledTabs, currentTab} = this.state;
         let toggledTabElements = [];
         for (let i = 0; i < toggledTabs.length; i += 1) {
             toggledTabElements.push(
                 (<TouchableHighlight
                     onPress={() => this.clickTabHandler(toggledTabs[i])}
+                    style={currentTab === toggledTabs[i]? KanbanStyles.checkedTab: null}
                 >
                     <KanbanTab
                         title={toggledTabs[i]}
@@ -66,7 +69,7 @@ class Kanban extends Component {
                 if (task.status === currentTab) {
                     displayedTasks.push(
                         (<TouchableHighlight
-
+                            style={[KanbanStyles.taskItems]}
                             onPress={() => this.clickTaskHandler(task.id)}
                         >
                             <KanbanUnprogressTask
@@ -87,6 +90,7 @@ class Kanban extends Component {
                 if (task.status === currentTab) {
                     displayedTasks.push(
                         (<TouchableHighlight
+                            style={[KanbanStyles.taskItems]}
 
                             onPress={() => this.clickTaskHandler(task.id)}
                         >
@@ -161,18 +165,22 @@ class Kanban extends Component {
     }
 
     render() {
+
         return (
-            <View>
-                <View>
+            <View style={[KanbanStyles.container]}>
+                <View style={[KanbanStyles.renderTabs]}>
                     {this.renderTabs()}
                 </View>
 
-                <View>
+                <ScrollView
+                    contentContainerStyle={[KanbanStyles.tasks]}
+                    scrollEnabled={true}
+                >
                     {this.renderTasks()}
-                </View>
-
-                {this.renderBoxList()}
+                </ScrollView>
+                
                 {this.renderTaskSimpleView()}
+                {this.renderBoxList()}
 
             </View>
         );

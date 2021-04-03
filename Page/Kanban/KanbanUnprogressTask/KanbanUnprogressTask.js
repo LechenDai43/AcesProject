@@ -9,9 +9,9 @@ class KanbanUnprogressTask extends Component {
 
     render() {
         return (
-            <View>
-                <Text>{this.props.detail.title}</Text>
-                <Text>{"Deadline: " + this.props.detail.deadline}</Text>
+            <View style = {KanbanUnprogressTaskStyles.list}>
+                <Text style = {KanbanUnprogressTaskStyles.title}>{this.props.detail.title}</Text>
+                <Text style = {KanbanUnprogressTaskStyles.content}>{"Deadline: " + this.props.detail.deadline}</Text>
             </View>
         );
     }

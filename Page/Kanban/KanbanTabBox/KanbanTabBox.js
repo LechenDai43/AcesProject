@@ -18,7 +18,7 @@ class KanbanTabBox extends Component {
                 (<TouchableHighlight
                     onPress={() => this.props.handler(tabs[i])}
                 >
-                    <Text>
+                    <Text style={KanbanTabBoxStyle.tabs}>
                         {tabs[i]}
                     </Text>
                 </TouchableHighlight>)
@@ -30,7 +30,7 @@ class KanbanTabBox extends Component {
 
     render() {
         return (
-            <View>
+            <View style={KanbanTabBoxStyle.tabBox}>
                 {this.renderBox()}
             </View>
         );
