@@ -7,6 +7,7 @@ import Footer from "./Page/Footer/Footer";
 import Kanban from "./Page/Kanban/Kanban";
 import Header from "./Page/Header/Header";
 import Gantt from "./Page/Gantt/Gantt";
+import Import from "./Page/Import/Import";
 
 class App extends Component {
     constructor(props) {
@@ -41,7 +42,7 @@ class App extends Component {
                     addHandler={() => this.changePage("Add", -1)}
                     importHandler={() => this.changePage("Import", -1)}
                 />
-                <Gantt/>
+                <Import/>
                 <Footer
                     redirect={(page) => this.changePage(page, -1)}
                     page={page}
