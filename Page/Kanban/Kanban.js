@@ -297,6 +297,10 @@ class Kanban extends Component {
             taskId: -1
         })
     }
+
+    openTask(taskId) {
+
+    }
 }
 
 export default Kanban;
