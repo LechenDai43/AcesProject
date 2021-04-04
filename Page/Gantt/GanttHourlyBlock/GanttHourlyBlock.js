@@ -10,7 +10,7 @@ class GanttHourlyBlock extends Component {
     renderContent() {
         if (this.props.booked === 1) {
             return (
-                <Text>
+                <Text style={GanttHourlyBlockStyles.hourtask}>
                     {this.props.content.title}
                 </Text>
             );
@@ -30,8 +30,8 @@ class GanttHourlyBlock extends Component {
             <TouchableHighlight
                 onPress={() => this.handleClick()}
             >
-                <View>
-                    <Text>{this.props.hour}</Text>
+                <View style={GanttHourlyBlockStyles.hourcontainer,GanttHourlyBlockStyles.hourtab}>
+                    <Text style={GanttHourlyBlockStyles.hourtext}>{this.props.hour}</Text>
                         {this.renderContent()}
                 </View>
             </TouchableHighlight>
