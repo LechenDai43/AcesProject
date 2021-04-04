@@ -28,6 +28,7 @@ class Kanban extends Component {
             // This variable holds the id of the pressed task
             taskId: -1,
             listHeight: 0,
+            lookingTas: 0
         }
     }
 
@@ -130,6 +131,7 @@ class Kanban extends Component {
 
     // This function renders the simple view of a task when necessary
     renderTaskSimpleView() {
+
         // Get the id of the chosen task
         let {taskId} = this.state;
         // Prepare the target task
@@ -183,6 +185,11 @@ class Kanban extends Component {
 
     // This function handle a press on a tab
     clickTabHandler(key) {
+        let {mode, lookingTask} = this.state;
+        if (mode === "More" || mode === "Transfer" || lookingTask > 0) {
+            return null;
+        }
+
         // If the more tab is pressed, then render the list of boxes
         if (key === "More") {
             this.setState({mode: "More"});
@@ -210,6 +217,11 @@ class Kanban extends Component {
 
     // This handles the click of a task
     clickTaskHandler(key) {
+        let {mode} = this.state;
+        if (mode === "More" || mode === "Transfer") {
+            return null;
+        }
+
         // Prepare the target task
         let target = null;
         // Find the target task by the id
@@ -225,7 +237,10 @@ class Kanban extends Component {
         if (target === null) {
             return null;
         }
-        this.setState({taskId: key});
+        this.setState({
+            taskId: key,
+            lookingTask: 1
+        });
     }
 
     // This handles the click of tab boxes when the mode is more
@@ -264,7 +279,12 @@ class Kanban extends Component {
             return null;
         }
 
-        this.setState({mode: "Unknown"})
+        this.setState({
+            mode: "Unknown",
+            lookingTask: 0
+        });
+
+        let oldStatus = OriginTasks[target].status;
         // Set the status of that task to the corresponding key
         OriginTasks[target].status = key;
         // Change some other fields if necessary
@@ -283,6 +303,10 @@ class Kanban extends Component {
             OriginTasks[target].progress = 0;
         }
 
+        if (oldStatus !== key) {
+            this.closeTaskSimpleView();
+        }
+
     }
 
     // This handles if the clicked task is to be transferred
@@ -294,7 +318,8 @@ class Kanban extends Component {
     closeTaskSimpleView() {
         this.setState({
             mode: "Unknown",
-            taskId: -1
+            taskId: -1,
+            lookingTask: 0
         })
     }
 
