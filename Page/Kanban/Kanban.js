@@ -28,6 +28,7 @@ class Kanban extends Component {
             // This variable holds the id of the pressed task
             taskId: -1,
             listHeight: 0,
+            lookingTas: 0
         }
     }
 
@@ -130,6 +131,11 @@ class Kanban extends Component {
 
     // This function renders the simple view of a task when necessary
     renderTaskSimpleView() {
+        let {mode, lookingTask} = this.state;
+        if (mode === "More" || mode === "Transfer" || lookingTask > 0) {
+            return null;
+        }
+
         // Get the id of the chosen task
         let {taskId} = this.state;
         // Prepare the target task
@@ -146,6 +152,10 @@ class Kanban extends Component {
         if (target === null) {
             return null;
         }
+
+        this.setState({
+            lookTask: 1
+        })
 
         // If the task is found, then open the simple view
         return (
@@ -183,6 +193,11 @@ class Kanban extends Component {
 
     // This function handle a press on a tab
     clickTabHandler(key) {
+        let {mode, lookingTask} = this.state;
+        if (mode === "More" || mode === "Transfer" || lookingTask > 0) {
+            return null;
+        }
+
         // If the more tab is pressed, then render the list of boxes
         if (key === "More") {
             this.setState({mode: "More"});
@@ -264,7 +279,10 @@ class Kanban extends Component {
             return null;
         }
 
-        this.setState({mode: "Unknown"})
+        this.setState({
+            mode: "Unknown",
+            lookingTask: 0
+        });
         // Set the status of that task to the corresponding key
         OriginTasks[target].status = key;
         // Change some other fields if necessary
