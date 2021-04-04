@@ -5,7 +5,7 @@ const HeaderStyles = StyleSheet.create({
     logo: {
         position: "absolute",
         left: 30,
-        color: "#baefab",
+        color: "#FFFFFF",
         fontWeight: "bold",
         fontSize: 30
     },

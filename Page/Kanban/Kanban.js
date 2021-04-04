@@ -7,11 +7,7 @@ import KanbanProgressTask from "./KanbanProgressTask/KanbanProgressTask";
 import KanbanStyles from "./KanbanStyle";
 import KanbanTabBox from "./KanbanTabBox/KanbanTabBox";
 import KanbanTaskSimpleView from "./KanbanTaskSimpleView/KanbanTaskSimpleView";
-
-let tasks = [];
-for (let ii = 0; ii < OriginTasks.length; ii += 1) {
-    tasks.push(OriginTasks[ii]);
-}
+import { ScrollView} from 'react-native';
 
 // These variables holds what tabs are progressed and what are not
 const unprogressedTab = new Set(["To-Do", "Done", "Requested", "Freeze"]);
@@ -26,21 +22,23 @@ class Kanban extends Component {
             // This variable holds all the tabs shown on the bar
             toggledTabs: ["To-Do", "In Progress", "Done", "More"],
             // This variable holds the current showing tab
-            currentTab: "Done",
+            currentTab: "To-Do",
             // This variable holds what the list of boxes is for
             mode: "Unknown",
             // This variable holds the id of the pressed task
-            taskId: -1
+            taskId: -1,
+            listHeight: 0,
         }
     }
 
     // This renders the clickable tabs
     renderTabs () {
-        let {toggledTabs} = this.state;
+        let {toggledTabs, currentTab} = this.state;
         let toggledTabElements = [];
         for (let i = 0; i < toggledTabs.length; i += 1) {
             toggledTabElements.push(
                 (<TouchableHighlight
+                    style={currentTab === toggledTabs[i]? KanbanStyles.checkedTab: null}
                     onPress={() => this.clickTabHandler(toggledTabs[i])}
                 >
                     <KanbanTab
@@ -61,12 +59,12 @@ class Kanban extends Component {
 
         // If the tabs is not a progressed tab
         if (unprogressedTab.has(currentTab)) {
-            for (let i = 0; i < tasks.length; i += 1) {
-                let task = tasks[i];
+            for (let i = 0; i < OriginTasks.length; i += 1) {
+                let task = OriginTasks[i];
                 if (task.status === currentTab) {
                     displayedTasks.push(
                         (<TouchableHighlight
-
+                            style={[KanbanStyles.taskItems]}
                             onPress={() => this.clickTaskHandler(task.id)}
                         >
                             <KanbanUnprogressTask
@@ -82,11 +80,12 @@ class Kanban extends Component {
         }
         // If the tab is a progressed tab
         else if (progressedTab.has(currentTab)) {
-            for (let i = 0; i < tasks.length; i += 1) {
-                let task = tasks[i];
+            for (let i = 0; i < OriginTasks.length; i += 1) {
+                let task = OriginTasks[i];
                 if (task.status === currentTab) {
                     displayedTasks.push(
                         (<TouchableHighlight
+                            style={[KanbanStyles.taskItems]}
 
                             onPress={() => this.clickTaskHandler(task.id)}
                         >
@@ -136,9 +135,9 @@ class Kanban extends Component {
         // Prepare the target task
         let target = null;
         // Find the target task by the id
-        for (let i = 0; i < tasks.length; i += 1) {
-            if (tasks[i].id === taskId) {
-                target = tasks[i];
+        for (let i = 0; i < OriginTasks.length; i += 1) {
+            if (OriginTasks[i].id === taskId) {
+                target = OriginTasks[i];
                 break;
             }
         }
@@ -161,18 +160,22 @@ class Kanban extends Component {
     }
 
     render() {
+
         return (
-            <View>
-                <View>
+            <View style={[KanbanStyles.container]}>
+                <View style={[KanbanStyles.renderTabs]}>
                     {this.renderTabs()}
                 </View>
 
-                <View>
+                <ScrollView
+                    contentContainerStyle={[KanbanStyles.tasks]}
+                    scrollEnabled={true}
+                >
                     {this.renderTasks()}
-                </View>
+                </ScrollView>
 
-                {this.renderBoxList()}
                 {this.renderTaskSimpleView()}
+                {this.renderBoxList()}
 
             </View>
         );
@@ -210,9 +213,9 @@ class Kanban extends Component {
         // Prepare the target task
         let target = null;
         // Find the target task by the id
-        for (let i = 0; i < tasks.length; i += 1) {
-            if (tasks[i].id === key) {
-                target = tasks[i];
+        for (let i = 0; i < OriginTasks.length; i += 1) {
+            if (OriginTasks[i].id === key) {
+                target = OriginTasks[i];
                 break;
             }
         }
@@ -249,8 +252,8 @@ class Kanban extends Component {
         // Prepare the target task
         let target = -1;
         // Find the target task by the id
-        for (let i = 0; i < tasks.length; i += 1) {
-            if (tasks[i].id === taskId) {
+        for (let i = 0; i < OriginTasks.length; i += 1) {
+            if (OriginTasks[i].id === taskId) {
                 target = i;
                 break;
             }
@@ -263,21 +266,21 @@ class Kanban extends Component {
 
         this.setState({mode: "Unknown"})
         // Set the status of that task to the corresponding key
-        tasks[target].status = key;
+        OriginTasks[target].status = key;
         // Change some other fields if necessary
         if (key === "Done") {
-            tasks[target].progress = tasks[target].duration;
+            OriginTasks[target].progress = OriginTasks[target].duration;
         }
         else if (key === "Failed") {
-            tasks[target].failed = 1;
+            OriginTasks[target].failed = 1;
         }
         else if (key === "Overdue") {
-            tasks[target].failed = 1;
-            tasks[target].overdue = 1;
+            OriginTasks[target].failed = 1;
+            OriginTasks[target].overdue = 1;
         }
         else if (key === "Freeze" || key === "Requested") {
-            tasks[target].duration = 0;
-            tasks[target].progress = 0;
+            OriginTasks[target].duration = 0;
+            OriginTasks[target].progress = 0;
         }
 
     }
@@ -293,6 +296,10 @@ class Kanban extends Component {
             mode: "Unknown",
             taskId: -1
         })
+    }
+
+    openTask(taskId) {
+
     }
 }
 

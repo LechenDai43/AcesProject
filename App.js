@@ -7,6 +7,7 @@ import Footer from "./Page/Footer/Footer";
 import Kanban from "./Page/Kanban/Kanban";
 import Header from "./Page/Header/Header";
 import Gantt from "./Page/Gantt/Gantt";
+import Import from "./Page/Import/Import";
 
 class App extends Component {
     constructor(props) {
@@ -30,10 +31,44 @@ class App extends Component {
     }
 
     changePage(page, taskId) {
-
+        if (taskId < 0) {
+            this.setState({
+                page: page
+            });
+        }
+        else {
+            this.setState({
+                page: page,
+                taskId: taskId
+            })
+        }
     }
 
-    render(): React.ReactNode {
+    renderPage() {
+        let {page} = this.state;
+        if (page === "Import") {
+            return (
+                <Import/>
+            );
+        }
+        else if (page === "Calendar") {
+            return (
+                <Gantt/>
+            );
+        }
+        else if (page === "Kanban") {
+            return (
+                <Kanban/>
+            )
+        }
+        else {
+            return (
+                <Kanban/>
+            )
+        }
+    }
+
+    render() {
         let {page} = this.state;
         return (
             <View style={styles.container}>
@@ -41,9 +76,9 @@ class App extends Component {
                     addHandler={() => this.changePage("Add", -1)}
                     importHandler={() => this.changePage("Import", -1)}
                 />
-                <Gantt/>
+                {this.renderPage()}
                 <Footer
-                    redirect={(page) => this.changePage(page, -1)}
+                    redirect={(p) => this.changePage(p, -1)}
                     page={page}
                 />
             </View>
@@ -55,8 +90,9 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 50,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: "stretch",
     justifyContent: 'center',
   },
 });
