@@ -31,7 +31,7 @@ class GanttHourlyBlock extends Component {
                 onPress={() => this.handleClick()}
             >
                 <View style={GanttHourlyBlockStyles.hourcontainer,GanttHourlyBlockStyles.hourtab}>
-                    <Text style={GanttHourlyBlockStyles.hourtext}>{this.props.hour}</Text>
+                    <Text style={GanttHourlyBlockStyles.hourtext}>{this.props.hour + ":00"}</Text>
                         {this.renderContent()}
                 </View>
             </TouchableHighlight>
