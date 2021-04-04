@@ -4,7 +4,7 @@ import { StyleSheet} from 'react-native';
 const TaskDetailStyles = StyleSheet.create({
     taskcontainer:{
         alignContent:'center',
-        height: 400,
+        height: 450,
         width: 300,
         backgroundColor: "#baefab",
         borderColor: "#20232a",
