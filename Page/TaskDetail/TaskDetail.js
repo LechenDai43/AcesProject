@@ -72,7 +72,7 @@ class TaskDetail extends Component {
                 day = dateline[1];
                 year = dateline[2];
             }
-            let title = content.title;
+            let {title} = this.state;
             return (
                 <View>
                     <View>
