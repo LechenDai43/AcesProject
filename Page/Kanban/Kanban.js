@@ -9,11 +9,6 @@ import KanbanTabBox from "./KanbanTabBox/KanbanTabBox";
 import KanbanTaskSimpleView from "./KanbanTaskSimpleView/KanbanTaskSimpleView";
 import { ScrollView} from 'react-native';
 
-let tasks = [];
-for (let ii = 0; ii < OriginTasks.length; ii += 1) {
-    tasks.push(OriginTasks[ii]);
-}
-
 // These variables holds what tabs are progressed and what are not
 const unprogressedTab = new Set(["To-Do", "Done", "Requested", "Freeze"]);
 const progressedTab = new Set(["In Progress", "Failed", "Overdue"]);
@@ -27,7 +22,7 @@ class Kanban extends Component {
             // This variable holds all the tabs shown on the bar
             toggledTabs: ["To-Do", "In Progress", "Done", "More"],
             // This variable holds the current showing tab
-            currentTab: "Done",
+            currentTab: "To-Do",
             // This variable holds what the list of boxes is for
             mode: "Unknown",
             // This variable holds the id of the pressed task
@@ -64,8 +59,8 @@ class Kanban extends Component {
 
         // If the tabs is not a progressed tab
         if (unprogressedTab.has(currentTab)) {
-            for (let i = 0; i < tasks.length; i += 1) {
-                let task = tasks[i];
+            for (let i = 0; i < OriginTasks.length; i += 1) {
+                let task = OriginTasks[i];
                 if (task.status === currentTab) {
                     displayedTasks.push(
                         (<TouchableHighlight
@@ -85,8 +80,8 @@ class Kanban extends Component {
         }
         // If the tab is a progressed tab
         else if (progressedTab.has(currentTab)) {
-            for (let i = 0; i < tasks.length; i += 1) {
-                let task = tasks[i];
+            for (let i = 0; i < OriginTasks.length; i += 1) {
+                let task = OriginTasks[i];
                 if (task.status === currentTab) {
                     displayedTasks.push(
                         (<TouchableHighlight
@@ -140,9 +135,9 @@ class Kanban extends Component {
         // Prepare the target task
         let target = null;
         // Find the target task by the id
-        for (let i = 0; i < tasks.length; i += 1) {
-            if (tasks[i].id === taskId) {
-                target = tasks[i];
+        for (let i = 0; i < OriginTasks.length; i += 1) {
+            if (OriginTasks[i].id === taskId) {
+                target = OriginTasks[i];
                 break;
             }
         }
@@ -178,7 +173,7 @@ class Kanban extends Component {
                 >
                     {this.renderTasks()}
                 </ScrollView>
-                
+
                 {this.renderTaskSimpleView()}
                 {this.renderBoxList()}
 
@@ -218,9 +213,9 @@ class Kanban extends Component {
         // Prepare the target task
         let target = null;
         // Find the target task by the id
-        for (let i = 0; i < tasks.length; i += 1) {
-            if (tasks[i].id === key) {
-                target = tasks[i];
+        for (let i = 0; i < OriginTasks.length; i += 1) {
+            if (OriginTasks[i].id === key) {
+                target = OriginTasks[i];
                 break;
             }
         }
@@ -257,8 +252,8 @@ class Kanban extends Component {
         // Prepare the target task
         let target = -1;
         // Find the target task by the id
-        for (let i = 0; i < tasks.length; i += 1) {
-            if (tasks[i].id === taskId) {
+        for (let i = 0; i < OriginTasks.length; i += 1) {
+            if (OriginTasks[i].id === taskId) {
                 target = i;
                 break;
             }
@@ -271,21 +266,21 @@ class Kanban extends Component {
 
         this.setState({mode: "Unknown"})
         // Set the status of that task to the corresponding key
-        tasks[target].status = key;
+        OriginTasks[target].status = key;
         // Change some other fields if necessary
         if (key === "Done") {
-            tasks[target].progress = tasks[target].duration;
+            OriginTasks[target].progress = OriginTasks[target].duration;
         }
         else if (key === "Failed") {
-            tasks[target].failed = 1;
+            OriginTasks[target].failed = 1;
         }
         else if (key === "Overdue") {
-            tasks[target].failed = 1;
-            tasks[target].overdue = 1;
+            OriginTasks[target].failed = 1;
+            OriginTasks[target].overdue = 1;
         }
         else if (key === "Freeze" || key === "Requested") {
-            tasks[target].duration = 0;
-            tasks[target].progress = 0;
+            OriginTasks[target].duration = 0;
+            OriginTasks[target].progress = 0;
         }
 
     }

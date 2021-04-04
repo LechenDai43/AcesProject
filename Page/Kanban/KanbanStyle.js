@@ -26,15 +26,12 @@ const KanbanStyles = StyleSheet.create({
     renderTasks: {
         display: 'flex',
         flexDirection: 'row',
-        
     },
     tasks:{
         alignItems:'center',
         // justifyContent:'center',
-    }, 
+    },
     taskItems: {
-        // borderColor:'black',
-        // borderWidth:2,
         width: 400,
         marginBottom: 5,
     },

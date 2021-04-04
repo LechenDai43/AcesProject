@@ -23,7 +23,11 @@ class TaskDetail extends Component {
         if (content !== this.props.content) {
             this.setState({
                 mode: this.props.mode,
-                content: this.props.content
+                content: this.props.content,
+                title: this.props.content.title,
+                deadline: this.props.content.deadline,
+                duration: this.props.content.duration,
+                difficulty: this.props.content.difficulty,
             });
             content = this.props.content;
         }
@@ -68,13 +72,14 @@ class TaskDetail extends Component {
                 day = dateline[1];
                 year = dateline[2];
             }
+            let title = content.title;
             return (
                 <View>
                     <View>
                         <Text>Title:</Text>
                         <TextInput
                             onChangeText={(t) => this.setState({title: t})}
-                            value={content.title}
+                            value={title}
                         />
                     </View>
                     <View>
