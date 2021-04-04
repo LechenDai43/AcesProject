@@ -38,8 +38,8 @@ class Kanban extends Component {
         for (let i = 0; i < toggledTabs.length; i += 1) {
             toggledTabElements.push(
                 (<TouchableHighlight
-                    onPress={() => this.clickTabHandler(toggledTabs[i])}
                     style={currentTab === toggledTabs[i]? KanbanStyles.checkedTab: null}
+                    onPress={() => this.clickTabHandler(toggledTabs[i])}
                 >
                     <KanbanTab
                         title={toggledTabs[i]}
