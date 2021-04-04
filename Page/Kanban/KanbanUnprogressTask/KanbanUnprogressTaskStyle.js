@@ -3,7 +3,7 @@ import { StyleSheet} from 'react-native';
 
 const KanbanUnprogressTaskStyles = StyleSheet.create({
     list:{
-        marginBottom:10,
+        // marginBottom:10,
         padding:4,
         alignItems: "center",
         justifyContent:'space-between',
@@ -15,7 +15,6 @@ const KanbanUnprogressTaskStyles = StyleSheet.create({
     },
     content:{
         fontSize: 15,
-        paddingBottom:2,
     }
 });
 

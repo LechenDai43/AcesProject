@@ -17,7 +17,7 @@ const KanbanStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'space-evenly',
         flexWrap:'wrap',
-        height: 35,
+        height: 30,
 
     },
     renderTasks: {
@@ -30,7 +30,8 @@ const KanbanStyles = StyleSheet.create({
     },
     taskItems: {
         width: 400,
-        marginBottom: 5,
+        marginTop:10,
+
     },
     checkedTab:{
         backgroundColor: "#FFFFFF",
