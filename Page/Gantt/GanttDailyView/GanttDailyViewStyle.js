@@ -17,7 +17,9 @@ const GanttDailyViewStyles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         fontFamily:'Arial'
+
     }
+
 });
 
 export default GanttDailyViewStyles;

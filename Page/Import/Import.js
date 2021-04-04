@@ -24,9 +24,9 @@ class Import extends Component {
         if (mode === "Choose") {
             let {pickerValue} = this.state;
             return (
-                <View style={ImportStyles.importcontainer}>
+                <View>
                     <View>
-                        <Text style={ImportStyles.importtext}>From: </Text>
+                        <Text>From: </Text>
                         <DropDownPicker
                             onChangeItem={(v) => this.setState({pickerValue: v.value})}
                             items={[
@@ -35,28 +35,25 @@ class Import extends Component {
                             ]}
                             containerStyle={{height: 40, width: 200}}
                             defaultValue={pickerValue}
-                           
-                        />
-                    </View>
-                    <View >
-                        <Text style={ImportStyles.importtext}>Username: </Text>
-                        <TextInput
-                            onChangeText={(t) => this.setState({username: t})}
-                            style={ImportStyles.importtext}
                         />
                     </View>
                     <View>
-                        <Text style={ImportStyles.importtext}>Password: </Text>
+                        <Text>Username: </Text>
+                        <TextInput
+                            onChangeText={(t) => this.setState({username: t})}
+                        />
+                    </View>
+                    <View>
+                        <Text>Password: </Text>
                         <TextInput
                             secureTextEntry={true}
                             onChangeText={(t) => this.setState({password: t})}
-                            style={ImportStyles.importtext}
                         />
                     </View>
                     <TouchableHighlight
                         onPress={() => this.handleSubmit()}
                     >
-                        <Text style={ImportStyles.importsubmit}>Submit</Text>
+                        <Text>Submit</Text>
                     </TouchableHighlight>
                 </View>
             );
