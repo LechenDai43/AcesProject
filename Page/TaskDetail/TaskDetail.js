@@ -33,30 +33,30 @@ class TaskDetail extends Component {
         }
         if (mode === "View") {
             return (
-                <View>
+                <View style={TaskDetailStyles.taskcontainer}>
                     <View>
-                        <Text>Title:</Text>
-                        <Text>{content.title}</Text>
+                        <Text style={TaskDetailStyles.tasktext}>Title:</Text>
+                        <Text style={TaskDetailStyles.tasktext}>{content.title}</Text>
                     </View>
                     <View>
-                        <Text>Deadline:</Text>
-                        <Text>{content.deadline}</Text>
+                        <Text style={TaskDetailStyles.tasktext}>Deadline:</Text>
+                        <Text style={TaskDetailStyles.tasktext}>{content.deadline}</Text>
                     </View>
                     <View>
-                        <Text>Estimate Time:</Text>
-                        <Text>{content.duration}</Text>
-                        <Text>Estimate Difficulty:</Text>
-                        <Text>{content.difficulty}</Text>
+                        <Text style={TaskDetailStyles.tasktext}>Estimate Time:</Text>
+                        <Text style={TaskDetailStyles.tasktext}>{content.duration}</Text>
+                        <Text style={TaskDetailStyles.tasktext}>Estimate Difficulty:</Text>
+                        <Text style={TaskDetailStyles.tasktext}>{content.difficulty}</Text>
                     </View>
                     <TouchableHighlight
                         onPress={() => this.setState({mode: "Edit"})}
                     >
-                        <Text>Edit</Text>
+                        <Text style={TaskDetailStyles.taskbutton}>Edit</Text>
                     </TouchableHighlight>
                     <TouchableHighlight
                         onPress={() => this.props.nextFunction(content)}
                     >
-                        <Text>{this.props.nextText}</Text>
+                        <Text style={TaskDetailStyles.taskbutton}>{this.props.nextText}</Text>
                     </TouchableHighlight>
                 </View>
             );
@@ -74,58 +74,64 @@ class TaskDetail extends Component {
             }
             let {title} = this.state;
             return (
-                <View>
+                <View style={TaskDetailStyles.taskcontainer}>
                     <View>
-                        <Text>Title:</Text>
+                        <Text style={TaskDetailStyles.tasktext}>Title:</Text>
                         <TextInput
                             onChangeText={(t) => this.setState({title: t})}
                             value={title}
+                            style={TaskDetailStyles.tasktext}
                         />
                     </View>
                     <View>
-                        <Text>Deadline:</Text>
+                        <Text style={TaskDetailStyles.tasktext}>Deadline:</Text>
                         <View>
-                            <Text>Year:</Text>
+                            <Text style={TaskDetailStyles.tasktext}>Year:</Text>
                             <TextInput
                                 onChangeText={(t) => this.setState({year: t})}
                                 keyboardType="numeric"
                                 value={year}
+                                style={TaskDetailStyles.tasktext}
                             />
-                            <Text>Month:</Text>
+                            <Text style={TaskDetailStyles.tasktext}>Month:</Text>
                             <TextInput
                                 onChangeText={(t) => this.setState({month: t})}
                                 keyboardType="numeric"
                                 value={month}
+                                style={TaskDetailStyles.tasktext}
                             />
-                            <Text>Day:</Text>
+                            <Text style={TaskDetailStyles.tasktext}>Day:</Text>
                             <TextInput
                                 onChangeText={(t) => this.setState({day: t})}
                                 keyboardType="numeric"
                                 value={day}
+                                style={TaskDetailStyles.tasktext}
                             />
                         </View>
                     </View>
                     <View>
-                        <Text>Estimate Time:</Text>
+                        <Text style={TaskDetailStyles.tasktext}>Estimate Time:</Text>
                         <TextInput
                             onChangeText={(t) => this.setState({duration: t})}
                             value={content.duration}
+                            style={TaskDetailStyles.tasktext}
                         />
-                        <Text>Estimate Difficulty:</Text>
+                        <Text style={TaskDetailStyles.tasktext}>Estimate Difficulty:</Text>
                         <TextInput
                             onChangeText={(t) => this.setState({difficulty: t})}
                             value={content.difficulty}
+                            style={TaskDetailStyles.tasktext}
                         />
                     </View>
                     <TouchableHighlight
                         onPress={() => this.handleSave()}
                     >
-                        <Text>Save</Text>
+                        <Text style={TaskDetailStyles.taskbutton}>Save</Text>
                     </TouchableHighlight>
                     <TouchableHighlight
                         onPress={() => this.props.deleteFunction(this.props.content)}
                     >
-                        <Text>Delete</Text>
+                        <Text style={TaskDetailStyles.taskbutton}>Delete</Text>
                     </TouchableHighlight>
                 </View>
             );

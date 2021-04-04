@@ -24,9 +24,9 @@ class Import extends Component {
         if (mode === "Choose") {
             let {pickerValue} = this.state;
             return (
-                <View>
+                <View style={ImportStyles.importcontainer}>
                     <View>
-                        <Text>From: </Text>
+                        <Text style={ImportStyles.importtext}>From: </Text>
                         <DropDownPicker
                             onChangeItem={(v) => this.setState({pickerValue: v.value})}
                             items={[
@@ -35,25 +35,28 @@ class Import extends Component {
                             ]}
                             containerStyle={{height: 40, width: 200}}
                             defaultValue={pickerValue}
+                           
                         />
                     </View>
-                    <View>
-                        <Text>Username: </Text>
+                    <View >
+                        <Text style={ImportStyles.importtext}>Username: </Text>
                         <TextInput
                             onChangeText={(t) => this.setState({username: t})}
+                            style={ImportStyles.importtext}
                         />
                     </View>
                     <View>
-                        <Text>Password: </Text>
+                        <Text style={ImportStyles.importtext}>Password: </Text>
                         <TextInput
                             secureTextEntry={true}
                             onChangeText={(t) => this.setState({password: t})}
+                            style={ImportStyles.importtext}
                         />
                     </View>
                     <TouchableHighlight
                         onPress={() => this.handleSubmit()}
                     >
-                        <Text>Submit</Text>
+                        <Text style={ImportStyles.importsubmit}>Submit</Text>
                     </TouchableHighlight>
                 </View>
             );
