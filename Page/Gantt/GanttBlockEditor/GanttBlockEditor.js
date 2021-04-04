@@ -19,7 +19,7 @@ class GanttBlockEditor extends Component {
     renderContent() {
         if (this.props.booked === 1) {
             return (
-                <Text>
+                <Text style={GanttBlockEditorStyles.blocktext}> 
                     {this.props.content.title}
                 </Text>
             );
@@ -32,7 +32,7 @@ class GanttBlockEditor extends Component {
             return (
                 <View>
                     <TouchableHighlight onPress={() => this.handleUnsavedClear()}>
-                        <Text>
+                        <Text style={GanttBlockEditorStyles.blockbuttonclear}>
                             Clear
                         </Text>
                     </TouchableHighlight>
@@ -50,11 +50,11 @@ class GanttBlockEditor extends Component {
                     (<TouchableHighlight
                         onPress={() => this.handleUnsavedChange(OriginTasks[i].title, OriginTasks[i].id)}
                     >
-                        <View>
-                            <Text>
+                        <View style={GanttBlockEditorStyles.buttoneditlist}> 
+                            <Text style={GanttBlockEditorStyles.blocktext}>
                                 {OriginTasks[i].title}
                             </Text>
-                            <Text>
+                            <Text style={GanttBlockEditorStyles.blocktext}>
                                 {"Deadline: " + OriginTasks[i].deadline}
                             </Text>
                         </View>
@@ -68,22 +68,22 @@ class GanttBlockEditor extends Component {
     render() {
         let {mode} = this.state;
         return (
-            <View>
-                <Text>
+            <View style={GanttBlockEditorStyles.blockcontainer}>
+                <Text style={GanttBlockEditorStyles.blocktitle}>
                     {this.props.month + "-" + this.props.day + "-" + this.props.year + "   " + this.props.hour + ":00"}
                 </Text>
                 {this.renderContent()}
                 <TouchableHighlight
                     onPress={() => this.handleEditPressed()}
                 >
-                    <Text>
+                    <Text style={GanttBlockEditorStyles.blockbuttonedit}>
                         {mode === "View"? "Edit": "Save"}
                     </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                     onPress={() => this.props.return()}
                 >
-                    <Text>
+                    <Text style={GanttBlockEditorStyles.blockbuttonback}>
                         Back
                     </Text>
                 </TouchableHighlight>

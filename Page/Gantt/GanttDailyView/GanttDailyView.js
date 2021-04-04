@@ -36,15 +36,16 @@ class GanttDailyView extends Component {
 
     render() {
         return (
-            <View>
+            <View style={GanttDailyViewStyles.dailylist}> 
                 <TouchableHighlight
                     onPress={this.props.back}
                 >
-                    <Text>
+                    <Text style={GanttDailyViewStyles.dailytext}>
                         Back
                     </Text>
                 </TouchableHighlight>
-                <Text>{this.props.month + "-" + this.props.day + "-" + this.props.year}</Text>
+                <Text style={GanttDailyViewStyles.dailydate}>{this.props.month + "-" + this.props.day + "-" + this.props.year}</Text>
+                
                 {this.renderHourlyBlock()}
             </View>
         )
