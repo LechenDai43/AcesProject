@@ -131,10 +131,6 @@ class Kanban extends Component {
 
     // This function renders the simple view of a task when necessary
     renderTaskSimpleView() {
-        let {mode, lookingTask} = this.state;
-        if (mode === "More" || mode === "Transfer" || lookingTask > 0) {
-            return null;
-        }
 
         // Get the id of the chosen task
         let {taskId} = this.state;
@@ -152,10 +148,6 @@ class Kanban extends Component {
         if (target === null) {
             return null;
         }
-
-        this.setState({
-            lookTask: 1
-        })
 
         // If the task is found, then open the simple view
         return (
@@ -225,6 +217,11 @@ class Kanban extends Component {
 
     // This handles the click of a task
     clickTaskHandler(key) {
+        let {mode} = this.state;
+        if (mode === "More" || mode === "Transfer") {
+            return null;
+        }
+
         // Prepare the target task
         let target = null;
         // Find the target task by the id
@@ -240,7 +237,10 @@ class Kanban extends Component {
         if (target === null) {
             return null;
         }
-        this.setState({taskId: key});
+        this.setState({
+            taskId: key,
+            lookingTask: 1
+        });
     }
 
     // This handles the click of tab boxes when the mode is more
@@ -283,6 +283,8 @@ class Kanban extends Component {
             mode: "Unknown",
             lookingTask: 0
         });
+
+        let oldStatus = OriginTasks[target].status;
         // Set the status of that task to the corresponding key
         OriginTasks[target].status = key;
         // Change some other fields if necessary
@@ -301,6 +303,10 @@ class Kanban extends Component {
             OriginTasks[target].progress = 0;
         }
 
+        if (oldStatus !== key) {
+            this.closeTaskSimpleView();
+        }
+
     }
 
     // This handles if the clicked task is to be transferred
@@ -312,7 +318,8 @@ class Kanban extends Component {
     closeTaskSimpleView() {
         this.setState({
             mode: "Unknown",
-            taskId: -1
+            taskId: -1,
+            lookingTask: 0
         })
     }
 
