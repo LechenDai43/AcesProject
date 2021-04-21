@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 
 // import routes
-
+require("./router/Task.router")(app);
 
 // start the server
 const PORT = process.env.PORT || 8080;
