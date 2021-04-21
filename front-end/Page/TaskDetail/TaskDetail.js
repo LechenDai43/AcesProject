@@ -62,7 +62,8 @@ class TaskDetail extends Component {
             );
         }
         else if (mode === "Edit") {
-            let dateline = content.deadline.split("-");
+            let {title, deadline} = this.state;
+            let dateline = deadline.split("-");
             let now = new Date(Date.now());
             let year = now.getFullYear();
             let month = now.getMonth();
@@ -72,7 +73,6 @@ class TaskDetail extends Component {
                 day = dateline[1];
                 year = dateline[2];
             }
-            let {title} = this.state;
             return (
                 <View style={TaskDetailStyles.taskcontainer}>
                     <View>
