@@ -12,7 +12,7 @@ exports.retrieveTask = (req, res) => {
         });
     }
     else {
-        db.ref('/users').on('value', querySnapShot => {
+        db.ref('/' + header + "_task").on('value', querySnapShot => {
             let data = querySnapShot.val();
             if (data[req.body.task_id]) {
                 res.send(data[req.body.task_id]);
@@ -32,7 +32,7 @@ exports.deleteTask = (req, res) => {
     db.ref('/' + header + "_task/" + id).remove();
 }
 
-// req.body 需要有 username 和 task
+// req.body 需要有 email 和 task
 exports.createTask = (req, res) => {
     let email = req.body.email;
     let header = email.replace('@', 'at').replace('.', 'dot');
@@ -55,27 +55,56 @@ exports.createTask = (req, res) => {
 
 // modify the task
 exports.modifyTask = (req, res) => {
-
 }
 
 // The following is for status
 
 exports.changeStatus = (req, res) => {
-
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    let id = req.body.task_id;
+    let newState = req.body.status;
+    let rootRef = db.ref('/' + header + "_task/" + id);
+    rootRef.child('status').set(newState);
 }
 
 exports.getStatus = (req, res) => {
-
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    db.ref('/' + header + "_task").on('value', querySnapShot => {
+        let data = querySnapShot.val();
+        if (data[req.body.task_id]) {
+            res.send(data[req.body.task_id]['status']);
+        }
+        else {
+            res.send({'status': 404})
+        }
+    });
 }
 
 // The following is for schedule
 
 exports.setEstimateTime = (req, res) => {
-
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    let id = req.body.task_id;
+    let newDuration = req.body.duration;
+    let rootRef = db.ref('/' + header + "_task/" + id);
+    rootRef.child('duration').set(newDuration);
 }
 
 exports.getEstimateTime = (req, res) => {
-
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    db.ref('/' + header + "_task").on('value', querySnapShot => {
+        let data = querySnapShot.val();
+        if (data[req.body.task_id]) {
+            res.send(data[req.body.task_id]['duration']);
+        }
+        else {
+            res.send({'status': 404})
+        }
+    });
 }
 
 exports.getTimeSlots = (req, res) => {

@@ -18,32 +18,7 @@ let hash = sha256.create();
 // start the server
 console.log(db)
 let header = "wjkatzuishuailedotcom";
-db.ref('/' + header + "_task").push({
-    'deadline': {
-        'day': -1,
-        'month': -1,
-        'year': -1
-    },
-    'difficulty': -1,
-    'duration': -1,
-    'failed': -1,
-    'overdue': -1,
-    'progress': -1,
-    'status': 'Null',
-    'title': 'Null'
-});
-db.ref('/' + header + "_schedule").push({
-    'task': {
-        'id': -1,
-        'table': header + "_task"
-    },
-    'time': {
-        'day': -1,
-        'hour': -1,
-        'month': -1,
-        'year': -1
-    }
-});
+
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
