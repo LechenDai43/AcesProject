@@ -17,21 +17,33 @@ sha256('wjkdxmd');
 let hash = sha256.create();
 // start the server
 console.log(db)
-db.ref('/users').on('value', querySnapShot => {
-    let data = querySnapShot.val();
-    let email = 'email';
-    let password = 'password';
-    data.forEach((item) => {
-        if (item['email'] === 'ldai43@gatech.edu') {
-            email = item['email'];
-            password = item['password'];
-            return;
-        }
-    });
-    console.log(email);
-    console.log(password)
-    console.log(data);
-})
+let header = "wjkatzuishuailedotcom";
+db.ref('/' + header + "_task").push({
+    'deadline': {
+        'day': -1,
+        'month': -1,
+        'year': -1
+    },
+    'difficulty': -1,
+    'duration': -1,
+    'failed': -1,
+    'overdue': -1,
+    'progress': -1,
+    'status': 'Null',
+    'title': 'Null'
+});
+db.ref('/' + header + "_schedule").push({
+    'task': {
+        'id': -1,
+        'table': header + "_task"
+    },
+    'time': {
+        'day': -1,
+        'hour': -1,
+        'month': -1,
+        'year': -1
+    }
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
