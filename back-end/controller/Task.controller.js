@@ -1,9 +1,27 @@
 const db = require("../configure/db.configure");
 
-// req.body 需要有 username 和 task_id
+// req.body 需要有 email 和 task_id
 // task_id 可以为空
 exports.retrieveTask = (req, res) => {
-
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    if (!req.body.task_id) {
+        db.ref('/' + header + "_task").on('value', querySnapShot => {
+            let data = querySnapShot.val();
+            res.send(data);
+        });
+    }
+    else {
+        db.ref('/users').on('value', querySnapShot => {
+            let data = querySnapShot.val();
+            if (data[req.body.task_id]) {
+                res.send(data[req.body.task_id]);
+            }
+            else {
+                res.send({'status': 404})
+            }
+        });
+    }
 }
 
 // req.body 需要有 username 和 task_id
