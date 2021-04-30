@@ -24,14 +24,33 @@ exports.retrieveTask = (req, res) => {
     }
 }
 
-// req.body 需要有 username 和 task_id
+// req.body 需要有 email 和 task_id
 exports.deleteTask = (req, res) => {
-
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    let id = req.body.task_id;
+    db.ref('/' + header + "_task/" + id).remove();
 }
 
 // req.body 需要有 username 和 task
 exports.createTask = (req, res) => {
-
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    let newItem = {
+        'deadline': {
+            'day': req.body.day,
+            'month': req.body.month,
+            'year': req.body.year
+        },
+        'difficulty': req.body.difficulty,
+        'duration': req.body.duration,
+        'failed': req.body.failed,
+        'overdue': req.body.overdue,
+        'progress': req.body.progress,
+        'status': req.body.status,
+        'title': req.body.title
+    };
+    db.ref('/' + header + '_task').push(newItem);
 }
 
 // modify the task
