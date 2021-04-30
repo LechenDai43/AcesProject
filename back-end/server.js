@@ -19,6 +19,17 @@ let hash = sha256.create();
 console.log(db)
 db.ref('/users').on('value', querySnapShot => {
     let data = querySnapShot.val();
+    let email = 'email';
+    let password = 'password';
+    data.forEach((item) => {
+        if (item['email'] === 'ldai43@gatech.edu') {
+            email = item['email'];
+            password = item['password'];
+            return;
+        }
+    });
+    console.log(email);
+    console.log(password)
     console.log(data);
 })
 
