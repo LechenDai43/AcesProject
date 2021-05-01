@@ -2,7 +2,7 @@ import http from "./http-common"
 
 class TaskService {
     getTask(data) {
-        return http.get("/aces/task", data);
+        return http.put("/aces/task/get", data);
     }
 
     deleteTask(data) {
@@ -18,7 +18,7 @@ class TaskService {
     }
 
     getTaskStatus(data) {
-        return http.get("/aces/task/status", data);
+        return http.put("/aces/task/status/get", data);
     }
 
     setTaskStatus(data) {
@@ -30,11 +30,11 @@ class TaskService {
     }
 
     getTaskLength(data) {
-        return http.get("/aces/task/schedule/length", data);
+        return http.put("/aces/task/schedule/length/get", data);
     }
 
     getDailySchedule(data) {
-        return http.get("/aces/task/schedule/time", data);
+        return http.put("/aces/task/schedule/time/get", data);
     }
 
     alterDailySchedule(data) {
@@ -50,7 +50,7 @@ class TaskService {
     }
 
     getTaskDueDate(data) {
-        return http.get("/aces/task/due", data);
+        return http.put("/aces/task/due/get", data);
     }
 
     setTaskDueDate(data) {
@@ -58,7 +58,7 @@ class TaskService {
     }
 
     getTaskEstimation(data) {
-        return http.get("/aces/task/estimation", data);
+        return http.put("/aces/task/estimation/get", data);
     }
 
     setTaskEstimation(data) {
