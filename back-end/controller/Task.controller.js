@@ -108,10 +108,27 @@ exports.getEstimateTime = (req, res) => {
 }
 
 exports.getTimeSlots = (req, res) => {
-
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    let day = req.body.day;
+    let month = req.body.month;
+    let year = req.body.year;
+    db.ref('/' + header + '_schedule').on('value', querySnapShot => {
+        let data = querySnapShot.val();
+        let result = [];
+        data.forEach((element) => {
+            let time = element['time'];
+            if (time['day'] === day && time['month'] === month && time['year'] === year) {
+                result.push(element);
+            }
+        });
+        res.send(result);
+    });
 }
 
 exports.addTimeSlots = (req, res) => {
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
 
 }
 
