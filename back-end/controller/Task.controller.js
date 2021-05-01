@@ -55,6 +55,12 @@ exports.createTask = (req, res) => {
 
 // modify the task
 exports.modifyTask = (req, res) => {
+    let key = req.body.key;
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    let id = req.body.task_id;
+    let rootRef = db.ref('/' + header + "_task/" + id);
+    rootRef.child(key).set(req.body.value);
 }
 
 // The following is for status
@@ -66,6 +72,12 @@ exports.changeStatus = (req, res) => {
     let newState = req.body.status;
     let rootRef = db.ref('/' + header + "_task/" + id);
     rootRef.child('status').set(newState);
+    if (newState === 'Failed') {
+        rootRef.child('failed').set(1);
+    }
+    else if (newState === 'Overdue') {
+        rootRef.child('overdue').set(1);
+    }
 }
 
 exports.getStatus = (req, res) => {
