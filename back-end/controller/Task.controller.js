@@ -14,8 +14,8 @@ exports.retrieveTask = (req, res) => {
     else {
         db.ref('/' + header + "_task").on('value', querySnapShot => {
             let data = querySnapShot.val();
-            if (data[req.body.task_id]) {
-                res.send(data[req.body.task_id]);
+            if (data.req.body.task_id) {
+                res.send(data.req.body.task_id);
             }
             else {
                 res.send({'status': 404})
@@ -126,12 +126,13 @@ exports.getTimeSlots = (req, res) => {
     let month = req.body.month;
     let year = req.body.year;
     db.ref('/' + header + '_schedule').on('value', querySnapShot => {
-        let data = querySnapShot.val();
+        let data = querySnapShot;
         let result = [];
-        data.forEach((element) => {
-            let time = element['time'];
-            if (time['day'] === day && time['month'] === month && time['year'] === year) {
-                result.push(element);
+        querySnapShot.forEach((subShot) => {
+            let item = subShot.val();
+            let time = item.time;
+            if (time.day === day && time.month === month && time.year === year) {
+                result.push(subShot);
             }
         });
         res.send(result);
@@ -165,11 +166,11 @@ exports.deleteTimeSlots = (req, res) => {
     db.ref('/' + header + '_schedule').on('value', querySnapShot => {
         let data = querySnapShot.val();
         let key = '';
-        let keys = data.keys();
+        let keys = Object.keys(data);
         keys.forEach((element) => {
             let item = data[element];
-            let time = item['time'];
-            if (time['day'] === day && time['month'] === month && time['year'] === year) {
+            let time = item.time;
+            if (time.day === day && time.month === month && time.year === year) {
                 key = element;
             }
         });
@@ -186,11 +187,11 @@ exports.changeSlotStatus = (req, res) => {
     db.ref('/' + header + '_schedule').on('value', querySnapShot => {
         let data = querySnapShot.val();
         let key = '';
-        let keys = data.keys();
+        let keys = Object.keys(data);
         keys.forEach((element) => {
             let item = data[element];
-            let time = item['time'];
-            if (time['day'] === day && time['month'] === month && time['year'] === year) {
+            let time = item.time;
+            if (time.day === day && time.month === month && time.year === year) {
                 key = element;
             }
         });

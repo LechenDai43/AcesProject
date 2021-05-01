@@ -1,8 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableHighlight} from 'react-native';
-import OriginalSchedule from "./Page/FakeData/OriginalSchedule";
-import OriginTasks from "./Page/FakeData/OriginTasks";
 import Footer from "./Page/Footer/Footer";
 import Kanban from "./Page/Kanban/Kanban";
 import Header from "./Page/Header/Header";
@@ -11,24 +9,14 @@ import Import from "./Page/Import/Import";
 import LogIn from "./Page/LogIn/LogIn";
 import Register from "./Page/Register/Register";
 import { registerRootComponent } from 'expo'; // import it explicitly
+import TaskService from "./Service/Task.service"
 
 class App extends Component {
     constructor(props) {
         super(props);
 
-        let tasks = [];
-        for (let ii = 0; ii < OriginTasks.length; ii += 1) {
-            tasks.push(OriginTasks[ii]);
-        }
-
-        let schedule = [];
-        for (let ii = 0; ii < OriginalSchedule.length; ii += 1) {
-            schedule.push(OriginalSchedule[ii]);
-        }
-
         this.state = {
-            tasks: tasks,
-            schedule: schedule,
+            tasks: [],
             page: "LogIn",
             userEmail: "",
         };
@@ -61,8 +49,11 @@ class App extends Component {
             );
         }
         else if (page === "Kanban") {
+            let {tasks} = this.state;
             return (
-                <Kanban/>
+                <Kanban
+                    tasks={tasks}
+                />
             )
         }
         else if(page === "LogIn") {
@@ -107,10 +98,36 @@ class App extends Component {
     }
 
     afterLogin(email) {
-        this.setState({
-            page: 'Kanban',
-            userEmail: email
+        let result = TaskService.getTask({'email': email});
+        let self = this;
+        result.then((result_data) => {
+            let taskKeys = Object.keys(result_data.data);
+            let tasks = [];
+            taskKeys.forEach((key) => {
+                let task = result_data.data[key];
+                if (task.title !== 'Null') {
+                    console.log(typeof task.deadline.day);
+                    let formattedTask = {
+                        id: key,
+                        title: task.title,
+                        deadline: task.deadline.month.toString().concat("-").concat(task.deadline.day.toString()).concat("-").concat(task.deadline.year.toString()),
+                        duration: task.duration,
+                        difficulty: task.difficulty,
+                        status: task.status,
+                        failed: task.failed,
+                        overdue: task.overdue,
+                        progress: task.progress
+                    };
+                    tasks.push(formattedTask);
+                }
+            });
+            self.setState({
+                page: 'Kanban',
+                userEmail: email,
+                tasks: tasks
+            });
         });
+
     }
 
     render() {

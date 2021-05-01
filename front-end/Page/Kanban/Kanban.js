@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
-import OriginTasks from "../FakeData/OriginTasks";
 import KanbanTab from "./KanbanTab/KanbanTab";
 import KanbanUnprogressTask from "./KanbanUnprogressTask/KanbanUnprogressTask";
 import KanbanProgressTask from "./KanbanProgressTask/KanbanProgressTask";
@@ -8,6 +7,7 @@ import KanbanStyles from "./KanbanStyle";
 import KanbanTabBox from "./KanbanTabBox/KanbanTabBox";
 import KanbanTaskSimpleView from "./KanbanTaskSimpleView/KanbanTaskSimpleView";
 import { ScrollView} from 'react-native';
+
 
 // These variables holds what tabs are progressed and what are not
 const unprogressedTab = new Set(["To-Do", "Done", "Requested", "Freeze"]);
@@ -57,6 +57,7 @@ class Kanban extends Component {
         let {currentTab} = this.state;
         // Prepare return variable
         let displayedTasks = [];
+        let OriginTasks = this.props.tasks;
 
         // If the tabs is not a progressed tab
         if (unprogressedTab.has(currentTab)) {
@@ -132,6 +133,7 @@ class Kanban extends Component {
     // This function renders the simple view of a task when necessary
     renderTaskSimpleView() {
 
+        let OriginTasks = this.props.tasks;
         // Get the id of the chosen task
         let {taskId} = this.state;
         // Prepare the target task
@@ -217,6 +219,7 @@ class Kanban extends Component {
 
     // This handles the click of a task
     clickTaskHandler(key) {
+        let OriginTasks = this.props.tasks;
         let {mode} = this.state;
         if (mode === "More" || mode === "Transfer") {
             return null;
@@ -262,6 +265,7 @@ class Kanban extends Component {
 
     // This handles the click of tab boxes when the mode is transfer
     transferModeHandler (key) {
+        let OriginTasks = this.props.tasks;
         // Get the id of the chosen task
         let {taskId} = this.state;
         // Prepare the target task
@@ -285,6 +289,7 @@ class Kanban extends Component {
         });
 
         let oldStatus = OriginTasks[target].status;
+        let task_id = OriginTasks[target].id;
         // Set the status of that task to the corresponding key
         OriginTasks[target].status = key;
         // Change some other fields if necessary
