@@ -129,7 +129,19 @@ exports.getTimeSlots = (req, res) => {
 exports.addTimeSlots = (req, res) => {
     let email = req.body.email;
     let header = email.replace('@', 'at').replace('.', 'dot');
-
+    let newItem = {
+        'task': {
+            'id': req.body.task_id,
+            'table': header + '_task'
+        },
+        'time': {
+            'day': req.body.day,
+            'month': req.body.month,
+            'year': req.body.year,
+            'hour': req.body.hour
+        }
+    };
+    db.ref('/' + header + '_schedule').push(newItem);
 }
 
 exports.deleteTimeSlots = (req, res) => {
