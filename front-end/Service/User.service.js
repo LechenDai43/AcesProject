@@ -2,7 +2,7 @@ import http from "./http-common"
 
 class UserService {
     loginUser(data) {
-        return http.get("/aces/user", data);
+        return http.put("/aces/user", data);
     }
 
     registerUser(data) {

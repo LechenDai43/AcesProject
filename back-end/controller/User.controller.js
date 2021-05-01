@@ -2,26 +2,38 @@ const db = require("../configure/db.configure").db;
 
 exports.login = (req, res) => {
     let key = req.body.username;
-    let keyType = '';
+    let found = 0;
     if (key.includes('@')) {
-        keyType = 'email';
+        db.ref('/users').on('value', querySnapShot => {
+            querySnapShot.forEach((i) => {
+                let item = i.val();
+                if (item.email === key) {
+                    let result = {
+                        'email': item.email,
+                        'password': item.password
+                    };
+                    found = 1;
+                    res.send(result);
+                }
+            });
+        });
     }
     else {
-        keyType = 'username'
-    }
-    db.ref('/users').on('value', querySnapShot => {
-        let data = querySnapShot.val();
-        data.forEach((item) => {
-            if (item[keyType] === key) {
-                let result = {
-                    'email': item['email'],
-                    'password': item['password']
-                };
-                res.send(result);
-                return;
-            }
+        db.ref('/users').on('value', querySnapShot => {
+            querySnapShot.forEach((i) => {
+                let item = i.val();
+                if (item.username === key) {
+                    let result = {
+                        'email': item.email,
+                        'password': item.password
+                    };
+                    found = 1;
+                    res.send(result);
+                }
+            });
         });
-    });
+    }
+
 }
 
 exports.register = (req, res) => {
@@ -31,7 +43,7 @@ exports.register = (req, res) => {
     let valid = 1;
     db.ref('/users').on('value', querySnapShot => {
         querySnapShot.forEach((item) => {
-            if (item['username'] === username && email === item['email']) {
+            if (item.val().username === username && email === item.val().email) {
                 valid = 0;
             }
         });
