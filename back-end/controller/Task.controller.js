@@ -145,11 +145,46 @@ exports.addTimeSlots = (req, res) => {
 }
 
 exports.deleteTimeSlots = (req, res) => {
-
+    let email = req.body.email;
+    let day = req.body.day;
+    let month = req.body.month;
+    let year = req.body.year;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    db.ref('/' + header + '_schedule').on('value', querySnapShot => {
+        let data = querySnapShot.val();
+        let key = '';
+        let keys = data.keys();
+        keys.forEach((element) => {
+            let item = data[element];
+            let time = item['time'];
+            if (time['day'] === day && time['month'] === month && time['year'] === year) {
+                key = element;
+            }
+        });
+        db.ref('/' + header + "_schedule/" + key).remove();
+    });
 }
 
 exports.changeSlotStatus = (req, res) => {
-
+    let email = req.body.email;
+    let day = req.body.day;
+    let month = req.body.month;
+    let year = req.body.year;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    db.ref('/' + header + '_schedule').on('value', querySnapShot => {
+        let data = querySnapShot.val();
+        let key = '';
+        let keys = data.keys();
+        keys.forEach((element) => {
+            let item = data[element];
+            let time = item['time'];
+            if (time['day'] === day && time['month'] === month && time['year'] === year) {
+                key = element;
+            }
+        });
+        let rootRef = db.ref('/' + header + "_schedule/" + key + "/task");
+        rootRef.child('id').set(req.body.taks_id);
+    });
 }
 
 // The following is for due date
