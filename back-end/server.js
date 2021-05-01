@@ -12,6 +12,7 @@ app.use(cors());
 
 // import routes
 require("./router/Task.router")(app);
+require("./router/User.router")(app);
 const sha256 = require('js-sha256');
 sha256('wjkdxmd');
 let hash = sha256.create();
