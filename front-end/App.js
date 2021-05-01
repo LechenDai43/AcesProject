@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import OriginalSchedule from "./Page/FakeData/OriginalSchedule";
 import OriginTasks from "./Page/FakeData/OriginTasks";
 import Footer from "./Page/Footer/Footer";
@@ -8,6 +8,9 @@ import Kanban from "./Page/Kanban/Kanban";
 import Header from "./Page/Header/Header";
 import Gantt from "./Page/Gantt/Gantt";
 import Import from "./Page/Import/Import";
+import LogIn from "./Page/LogIn/LogIn";
+import Register from "./Page/Register/Register";
+import { registerRootComponent } from 'expo'; // import it explicitly
 
 class App extends Component {
     constructor(props) {
@@ -26,7 +29,7 @@ class App extends Component {
         this.state = {
             tasks: tasks,
             schedule: schedule,
-            page: "Calendar"
+            page: "LogIn"
         };
     }
 
@@ -59,6 +62,25 @@ class App extends Component {
         else if (page === "Kanban") {
             return (
                 <Kanban/>
+            )
+        }
+        else if(page == "LogIn") {
+            return (
+                <View style = {lstyles.container}>
+                    <LogIn/>
+                    <TouchableHighlight
+                        onPress = {()=> this.changePage("Register",-1)}
+                    >
+                        <Text>Don't have an account?</Text>
+                    </TouchableHighlight>
+                </View>
+            )
+        }
+        else if(page == "Register") {
+            return (
+                <Register
+                    style = {lstyles.container}
+                />
             )
         }
         else {
@@ -96,5 +118,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+const lstyles = StyleSheet.create({
+    container:{
+        height: 300,
+        width: 300,
+        backgroundColor:"#FFFFFF",
+        borderColor: "#20232a",
+        borderRadius: 20
+    }
+})
 
 export default App;
