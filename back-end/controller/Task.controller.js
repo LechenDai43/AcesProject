@@ -194,6 +194,16 @@ exports.getDueDate = (req, res) => {
 }
 
 exports.setDueDate = (req, res) => {
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    let id = req.body.task_id;
+    let day = req.body.day;
+    let month = req.body.month;
+    let year = req.body.year;
+    let rootRef = db.ref('/' + header + "_task/" + id + "/deadline");
+    rootRef.child('day').set(day);
+    rootRef.child('month').set(month);
+    rootRef.child('year').set(year);
 
 }
 
@@ -204,5 +214,10 @@ exports.getEstimateDifficulty = (req, res) => {
 }
 
 exports.setEstimateDifficulty = (req, res) => {
-
+    let email = req.body.email;
+    let header = email.replace('@', 'at').replace('.', 'dot');
+    let id = req.body.task_id;
+    let diff = req.body.difficulty;
+    let rootRef = db.ref('/' + header + "_task/" + id);
+    rootRef.child('difficulty').set(diff);
 }
