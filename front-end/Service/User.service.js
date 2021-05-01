@@ -1,11 +1,12 @@
 import http from "./http-common"
 
 class UserService {
-    login(data) {
+    loginUser(data) {
         return http.get("/aces/user", data);
     }
 
-    register(data) {
+    registerUser(data) {
+        console.log(data);
         return http.post("/aces/user", data);
     }
 }

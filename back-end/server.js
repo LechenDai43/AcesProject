@@ -9,17 +9,14 @@ const app = express();
 // };
 // app.use(cors(corsOptions));
 app.use(cors());
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // import routes
 require("./router/Task.router")(app);
 require("./router/User.router")(app);
-const sha256 = require('js-sha256');
-sha256('wjkdxmd');
-let hash = sha256.create();
 // start the server
-console.log(db)
-let header = "wjkatzuishuailedotcom";
-
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

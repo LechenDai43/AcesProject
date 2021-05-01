@@ -1,4 +1,4 @@
-const db = require("../configure/db.configure");
+const db = require("../configure/db.configure").db;
 
 // req.body 需要有 email 和 task_id
 // task_id 可以为空

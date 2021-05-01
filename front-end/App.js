@@ -29,7 +29,8 @@ class App extends Component {
         this.state = {
             tasks: tasks,
             schedule: schedule,
-            page: "LogIn"
+            page: "LogIn",
+            userEmail: "",
         };
     }
 
@@ -64,10 +65,12 @@ class App extends Component {
                 <Kanban/>
             )
         }
-        else if(page == "LogIn") {
+        else if(page === "LogIn") {
             return (
                 <View style = {lstyles.container}>
-                    <LogIn/>
+                    <LogIn
+                        handler={(mail) => this.afterLogin(mail)}
+                    />
                     <TouchableHighlight
                         onPress = {()=> this.changePage("Register",-1)}
                     >
@@ -76,10 +79,11 @@ class App extends Component {
                 </View>
             )
         }
-        else if(page == "Register") {
+        else if(page === "Register") {
             return (
                 <Register
                     style = {lstyles.container}
+                    handler={(mail) => this.afterLogin(mail)}
                 />
             )
         }
@@ -88,6 +92,25 @@ class App extends Component {
                 <Kanban/>
             )
         }
+    }
+
+    renderFooterOrNot() {
+        let {page} = this.state;
+        if (page !== 'LogIn' && page !== 'Register') {
+            return (
+                <Footer
+                    redirect={(p) => this.changePage(p, -1)}
+                    page={page}
+                />
+            );
+        }
+    }
+
+    afterLogin(email) {
+        this.setState({
+            page: 'Kanban',
+            userEmail: email
+        });
     }
 
     render() {
@@ -99,10 +122,7 @@ class App extends Component {
                     importHandler={() => this.changePage("Import", -1)}
                 />
                 {this.renderPage()}
-                <Footer
-                    redirect={(p) => this.changePage(p, -1)}
-                    page={page}
-                />
+                {this.renderFooterOrNot()}
             </View>
         );
     }
