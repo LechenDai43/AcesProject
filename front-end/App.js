@@ -44,7 +44,9 @@ class App extends Component {
         }
         else if (page === "Calendar") {
             return (
-                <Gantt/>
+                <Gantt
+                    email={userEmail}
+                />
             );
         }
         else if (page === "Kanban") {

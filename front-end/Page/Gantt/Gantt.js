@@ -17,6 +17,7 @@ class Gantt extends Component {
             hour: 0,
             dailyMode: 0
         }
+        this.schedule = [];
     }
 
     renderDailyCalender() {
