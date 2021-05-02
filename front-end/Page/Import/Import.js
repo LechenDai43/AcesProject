@@ -6,6 +6,7 @@ import ImportStyles from "./ImportStyle";
 import OriginTasks from "../FakeData/OriginTasks";
 import ImportedTasks from "../FakeData/ImportedTasks";
 import TaskService from "../../Service/Task.service";
+import SubmitAuth from "./SubmitAuth/SubmitAuth";
 
 class Import extends Component {
     constructor(props) {
@@ -54,11 +55,13 @@ class Import extends Component {
                             style={ImportStyles.importtext}
                         />
                     </View>
+                    <SubmitAuth/>
                     <TouchableHighlight
                         onPress={() => this.handleSubmit()}
                     >
                         <Text style={ImportStyles.importsubmit}>Submit</Text>
                     </TouchableHighlight>
+                    
                 </View>
             );
         }
