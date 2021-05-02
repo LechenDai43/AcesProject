@@ -1,176 +1,195 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Picker } from 'react-native';
-import { styles } from './stylesheet';
-import Menu from './components/menu';
-import Buttons from './components/button';
-import Timer from './components/timer';
-import Label from './components/label';
-import Info from './components/info';
-import Picture from './components/picture';
-import vibrate from './utils/vibrate';
+import * as React from 'react';
+import {Text,View,TouchableOpacity,TextInput} from 'react-native';
+import {styles} from './stylesheet'
+import { vibrate } from './utils';
 
-function leftPadding(n) {
-  if (parseInt(n) < 10) {
-    return "0" + n.toString();
-  } else {
-    return n.toString();
-  }
-}
+const Init_work = '25';
+const Init_Break = '05';
+const Init_Second = '00';
+const Work = 'Work';
+const Break = 'Break';
+const Start = 'Start';
+const Stop = 'Stop';
 
-function getTime(val) {
-  return leftPadding(val) + ":00";
-}
+let interval = 0;
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
-    super(props),
+    super(props);
     this.state = {
-      currentTime: "25:00",
-      workTime: "25:00",
-      breakTime: "05:00",
-      working: true,
-      timer: null,
-      paused: false,
-      playing: false,
-    }
-    this.setWorkTimer = this.setWorkTimer.bind(this);
-    this.setBreakTimer = this.setBreakTimer.bind(this);
-    this.playButton = this.playButton.bind(this);
-    this.pauseButton = this.pauseButton.bind(this);
-    this.resetButton = this.resetButton.bind(this);
-    this.countdown = this.countdown.bind(this);
-    this.toggleStatus = this.toggleStatus.bind(this);
+      minutes: Init_work,
+      seconds: Init_Second,
+      status: Work,
+      buttonLabel: Start,
+      workInput: Init_work,
+      breakInput: Init_Break,
+    };
+    this.secondsRemaining;
+    this.isRunning = false;
   }
+  setupInteval = () => {
+    clearInterval(interval);
+    interval = setInterval(() => this.tick(), 1000);
+  };
 
-  setWorkTimer(val) {
-    let newTime = getTime(val);
-    this.setState({
-      workTime: newTime,
-    });
-    if (!this.state.timer) {
-      this.setState({
-        currentTime: newTime,
-      });
-    }      
-  }
+  tick = () => {
+    let minutes = Math.floor(this.secondsRemaining / 60);
+    let seconds = this.secondsRemaining - minutes * 60;
 
-  setBreakTimer(val) {
-    let newTime = getTime(val);
-    this.setState({
-      breakTime: newTime,
-    });
-  }
+    minutes = this.norDigits(minutes);
+    seconds = this.norDigits(seconds);
 
-  playButton() {
-    if (this.state.paused === true || this.state.playing === false) { 
-      this.setState({
-        timer: setInterval(this.countdown, 1000),
-        paused: false,
-        playing: true,
-      });
-    }
-  }
+    this.setState(previousState => ({
+      minutes: minutes,
+      seconds: seconds,
+    }));
 
-  pauseButton () {
-    if (this.state.paused === false && this.state.playing === true) {
-      clearInterval(this.state.timer);
-      this.setState({
-        paused: true,
-        timer: null,
-        playing: false
-      });
-      console.log(this.state.paused);
-    } else if (this.state.paused === true && this.state.playing === false) {
-      this.playButton();
-    }       
-  }
+    this.secondsRemaining--;
 
-  resetButton () {
-    this.pauseButton();
-    this.setState({
-      currentTime: this.state.workTime,
-      playing: false,
-      paused: false,
-      working: true,
-    })
-  }
-
-  countdown() {
-    if (this.state.currentTime === "00:00" && this.state.playing === true) {
-      console.log('finished');
+    if (minutes == 0 && seconds == 0) {
       vibrate();
-      this.toggleStatus();
-    } else {
-      let sec = this.state.currentTime.slice(3);
-      let min = this.state.currentTime.slice(0, 2);
-      if (sec === "00") {
-        let newMin = leftPadding(parseInt(min) - 1);
-        let newTime = newMin + ":59";
-        this.setState({
-          currentTime: newTime,
-        });
+      if (this.state.status == Work) {
+        this.startBreak();
       } else {
-        let newSec = leftPadding((parseInt(sec) - 1));
-        let newTime = min + ":" + newSec;
-        this.setState({
-          currentTime: newTime,
-        })
+        this.startWork();
       }
     }
-  }
+  };
 
-  toggleStatus() {
-    if (this.state.working) {
-      this.setState({
-        working: false,
-        currentTime: this.state.breakTime,
-      })
-    } else {
-      this.setState({
-        working: true,
-        currentTime: this.state.workTime,
-      })
+  startStopTimer = workSession => {
+    if (this.isRunning) {
+      return this.pauseTimer();
     }
-  }
+    this.setState(previousState => ({
+      buttonLabel: Stop,
+    }));
+
+    if (!this.secondsRemaining) {
+      this.secondsRemaining = this.state.minutes ? this.state.minutes * 60: Init_work * 60;
+    }
+    this.isRunning = true;
+    this.setupInteval();
+  };
+
+  pauseTimer = () => {
+    clearInterval(interval);
+    this.isRunning = false;
+    this.setState(previousState => ({
+      buttonLabel: Start,
+    }));
+  };
+
+  startWork = () => {
+    const that = this;
+    this.setState(previousState => ({
+      minutes: that.norDigits(this.state.workInput),
+      seconds: Init_Second,
+      status: Work,
+      buttonLabel: Stop,
+    }));
+    this.secondsRemaining = this.state.workInput * 60;
+    this.setupInteval();
+  };
+
+ 
+  resetTimer = () => {
+    const that = this;
+    this.isRunning = false;
+    this.secondsRemaining = 0;
+    clearInterval(interval);
+    this.setState(previousState => ({
+      status: Work,
+      buttonLabel: Start,
+      seconds: Init_Second,
+      minutes: that.norDigits(previousState.workInput),
+    }));
+  };
+
+  startBreak = () => {
+    const that = this;
+    this.setState(previousState => ({
+      minutes: that.norDigits(this.state.breakInput),
+      seconds: Init_Second,
+      status: Break,
+      buttonLabel: Stop,
+    }));
+    this.secondsRemaining = this.state.breakInput * 60;
+    this.setupInteval();
+  };
+
+
+  onWorkInputChange = workMin => {
+    const that = this;
+
+    this.setState(previousState => ({
+      workInput: workMin,
+      minutes: that.norDigits(workMin),
+    }));
+
+    this.resetTimer();
+  };
+
+  onBreakInputChange = breakMin => {
+    const that = this;
+
+    this.setState(previousState => ({
+      breakInput: breakMin,
+      minutes: that.norDigits(this.state.workInput),
+    }));
+
+    this.resetTimer();
+  };
+
+  norDigits = value => {
+    if (value.toString().length < 2) {
+      return '0' + value;
+    }
+    return value;
+  };
 
   render() {
     return (
       <View style={styles.container}>
-        <Timer currentTime={this.state.currentTime}/>
-        <Label working={this.state.working} paused={this.state.paused} playing={this.state.playing}/>
-        <View style={{flexDirection: 'row'}}>
-          <Buttons 
-            title="Play" 
-            onPress={this.playButton} 
-          />
-          <Buttons 
-            title="Pause" 
-            onPress={this.pauseButton} 
-          />
-          <Buttons 
-            title="Reset" 
-            onPress={this.resetButton} 
+        <View>
+          <Text style={styles.status}>{this.state.status}</Text>
+          <Text style={styles.timer}>
+            {this.state.minutes}:{this.state.seconds}
+          </Text>
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Set up work time (mins):</Text>
+          <TextInput
+            defaultValue={`${this.state.workInput}`}
+            maxLength={4}
+            style={styles.input}
+            onChangeText={this.onWorkInputChange}
           />
         </View>
-        <View style={styles.menuContainer}>
-          <Text>Select work time (min): </Text>
-          <Menu 
-            selected={Number(this.state.workTime.slice(0, 2)).toString()}
-            onValueChange={this.setWorkTimer}
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Set up break time (mins):</Text>
+          <TextInput
+            defaultValue={`${this.state.breakInput}`}
+            maxLength={4}
+            style={styles.input}
+            onChangeText={this.onBreakInputChange}
           />
         </View>
-        <View style={styles.menuContainer}>
-          <Text>Select break time (min): </Text>
-          <Menu 
-            selected={Number(this.state.breakTime.slice(0, 2)).toString()}
-            onValueChange={this.setBreakTimer}
-          />
-        </View> 
-        <Info />
-        <Picture />
+        <View style={styles.btnContainer}>
+          <TouchableOpacity
+            style={styles.startStopBtn}
+            onPress={() => this.startStopTimer()}>
+            <Text style={styles.startStopBtnText}>
+              {this.state.buttonLabel}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.resetBtn}
+            onPress={() => this.resetTimer()}>
+            <Text style={styles.resetBtnText}>Reset</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
 
-export default App;

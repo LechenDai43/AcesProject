@@ -1,83 +1,77 @@
 import { StyleSheet } from 'react-native'; 
 
+import Constants from 'expo-constants';
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    marginTop: Constants.statusBarHeight,
+    paddingTop: 20,
   },
-  timerContainer: {
-    borderRadius: 5,
-    borderBottomWidth: 2,
-    borderTopWidth: 2,
-    borderLeftWidth: 2,
-    borderRightWidth: 2,
-    position: 'absolute',
-    top: 80
+  status: {
+    marginTop: 150,
+    alignItems:'center',
+    fontSize: 35,
+    textAlign: 'center',
   },
   timer: {
-    fontSize: 50,
-    paddingLeft: 6,
-    paddingRight: 3,
+    fontSize: 90,
+    color: '#F3420F',
+    padding: 10,
   },
-  label: {
-    fontSize: 40,
+  startStopBtn: {
+    paddingTop: 10,
+    paddingRight: 30,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    marginRight: 15,
+    borderWidth: 1,
+    borderRadius: 20,
+  },
+  resetBtn: {
+    paddingTop: 10,
+    paddingRight: 30,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    marginRight: 15,
+    borderWidth: 1,
+    borderRadius: 20,
+  },
+  btnContainer: {
+    flexDirection: 'row',
     marginTop: 20,
-    marginBottom: 25,
-    alignSelf: 'center'
   },
-  smallLabel: {
-    fontSize: 20,
-    marginTop: 0,
-    marginBottom: 25,
-    alignSelf: 'center',
+  startStopBtnText: {
+    color: '#F8997E',
+    fontSize: 25,
   },
-  labelContainer: {
-    height: 60,        
-    justifyContent: 'center',
+  resetBtnText: {
+    color: '#F8997E',
+    fontSize: 25,
   },
-  button: {
-    marginHorizontal: 5,
-    marginBottom: 20
+  inputContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
   },
-  menu: {
-    marginLeft: 10,
-    marginRight: 10,
+  inputLabel: {
+    fontSize: 18,
+    color: '#4A5568',
+    paddingRight: 10,
+    paddingTop: 5,
+    fontWeight: 'bold',
   },
-  dropdownTextStyle: {
-    fontSize: 20
+  input: {
+    color: '#667EEA',
+    borderWidth: 1,
+    borderColor: '#4A5568',
+    borderRadius: 10,
+    fontSize: 18,
+    padding: 8,
+    textAlign: 'center',
+    marginLeft: 5,
+    maxWidth: 60,
+    minWidth: 40
   },
-  textStyle: {
-    fontSize: 20,
-  },
-  dropdownButtonStyle: {
-    width: 30,
-    backgroundColor: "#dddddd",
-    borderRadius: 5,
-    alignItems: 'center'
-  },
-  menuContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10
-  },
-  menuLabel: {
-    fontSize: 20
-  },
-  infoBox: {
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 60
-  },
-  infoText: {
-    fontSize: 15
-  },
-  image: {
-    width: 50, 
-    height: 50,
-    position: 'absolute',
-    bottom: 8
-  }
 });

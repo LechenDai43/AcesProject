@@ -8,6 +8,7 @@ import Kanban from "./Page/Kanban/Kanban";
 import Header from "./Page/Header/Header";
 import Gantt from "./Page/Gantt/Gantt";
 import Import from "./Page/Import/Import";
+import Pomodoro from './Page/Pomodoro/pomodoro';
 
 class App extends Component {
     constructor(props) {
@@ -59,6 +60,11 @@ class App extends Component {
         else if (page === "Kanban") {
             return (
                 <Kanban/>
+            )
+        }
+        else if (page === "Timer") {
+            return (
+                <Pomodoro/>
             )
         }
         else {
