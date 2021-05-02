@@ -6,13 +6,13 @@ exports.retrieveTask = (req, res) => {
     let email = req.body.email;
     let header = email.replace('@', 'at').replace('.', 'dot');
     if (!req.body.task_id) {
-        db.ref('/' + header + "_task").on('value', querySnapShot => {
+        db.ref('/' + header + "_task").once('value', querySnapShot => {
             let data = querySnapShot.val();
             res.send(data);
         });
     }
     else {
-        db.ref('/' + header + "_task").on('value', querySnapShot => {
+        db.ref('/' + header + "_task").once('value', querySnapShot => {
             let data = querySnapShot.val();
             if (data.req.body.task_id) {
                 res.send(data.req.body.task_id);
@@ -66,6 +66,7 @@ exports.modifyTask = (req, res) => {
 // The following is for status
 
 exports.changeStatus = (req, res) => {
+    console.log(req.body)
     let email = req.body.email;
     let header = email.replace('@', 'at').replace('.', 'dot');
     let id = req.body.task_id;
@@ -73,17 +74,25 @@ exports.changeStatus = (req, res) => {
     let rootRef = db.ref('/' + header + "_task/" + id);
     rootRef.child('status').set(newState);
     if (newState === 'Failed') {
-        rootRef.child('failed').set(1);
+        db.ref('/' + header + "_task/" + id).child('failed').set(1);
     }
     else if (newState === 'Overdue') {
-        rootRef.child('overdue').set(1);
+        db.ref('/' + header + "_task/" + id).child('failed').set(1);
+        db.ref('/' + header + "_task/" + id).child('overdue').set(1);
+    }
+    else if (newState === "Freeze" || newState === "Requested") {
+        db.ref('/' + header + "_task/" + id).child('duration').set(1);
+        db.ref('/' + header + "_task/" + id).child('progress').set(1);
+    }
+    else if (newState === "Done") {
+        db.ref('/' + header + "_task/" + id).child('progress').set(req.body.duration);
     }
 }
 
 exports.getStatus = (req, res) => {
     let email = req.body.email;
     let header = email.replace('@', 'at').replace('.', 'dot');
-    db.ref('/' + header + "_task").on('value', querySnapShot => {
+    db.ref('/' + header + "_task").once('value', querySnapShot => {
         let data = querySnapShot.val();
         if (data[req.body.task_id]) {
             res.send(data[req.body.task_id]['status']);
@@ -108,7 +117,7 @@ exports.setEstimateTime = (req, res) => {
 exports.getEstimateTime = (req, res) => {
     let email = req.body.email;
     let header = email.replace('@', 'at').replace('.', 'dot');
-    db.ref('/' + header + "_task").on('value', querySnapShot => {
+    db.ref('/' + header + "_task").once('value', querySnapShot => {
         let data = querySnapShot.val();
         if (data[req.body.task_id]) {
             res.send(data[req.body.task_id]['duration']);
@@ -125,7 +134,7 @@ exports.getTimeSlots = (req, res) => {
     let day = req.body.day;
     let month = req.body.month;
     let year = req.body.year;
-    db.ref('/' + header + '_schedule').on('value', querySnapShot => {
+    db.ref('/' + header + '_schedule').once('value', querySnapShot => {
         let data = querySnapShot;
         let result = [];
         querySnapShot.forEach((subShot) => {
@@ -163,7 +172,7 @@ exports.deleteTimeSlots = (req, res) => {
     let month = req.body.month;
     let year = req.body.year;
     let header = email.replace('@', 'at').replace('.', 'dot');
-    db.ref('/' + header + '_schedule').on('value', querySnapShot => {
+    db.ref('/' + header + '_schedule').once('value', querySnapShot => {
         let data = querySnapShot.val();
         let key = '';
         let keys = Object.keys(data);
@@ -184,7 +193,7 @@ exports.changeSlotStatus = (req, res) => {
     let month = req.body.month;
     let year = req.body.year;
     let header = email.replace('@', 'at').replace('.', 'dot');
-    db.ref('/' + header + '_schedule').on('value', querySnapShot => {
+    db.ref('/' + header + '_schedule').once('value', querySnapShot => {
         let data = querySnapShot.val();
         let key = '';
         let keys = Object.keys(data);

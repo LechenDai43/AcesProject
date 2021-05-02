@@ -16,7 +16,6 @@ class App extends Component {
         super(props);
 
         this.state = {
-            tasks: [],
             page: "LogIn",
             userEmail: "",
         };
@@ -37,7 +36,7 @@ class App extends Component {
     }
 
     renderPage() {
-        let {page} = this.state;
+        let {page, userEmail} = this.state;
         if (page === "Import") {
             return (
                 <Import/>
@@ -49,10 +48,9 @@ class App extends Component {
             );
         }
         else if (page === "Kanban") {
-            let {tasks} = this.state;
             return (
                 <Kanban
-                    tasks={tasks}
+                    email={userEmail}
                 />
             )
         }
@@ -98,36 +96,10 @@ class App extends Component {
     }
 
     afterLogin(email) {
-        let result = TaskService.getTask({'email': email});
-        let self = this;
-        result.then((result_data) => {
-            let taskKeys = Object.keys(result_data.data);
-            let tasks = [];
-            taskKeys.forEach((key) => {
-                let task = result_data.data[key];
-                if (task.title !== 'Null') {
-                    console.log(typeof task.deadline.day);
-                    let formattedTask = {
-                        id: key,
-                        title: task.title,
-                        deadline: task.deadline.month.toString().concat("-").concat(task.deadline.day.toString()).concat("-").concat(task.deadline.year.toString()),
-                        duration: task.duration,
-                        difficulty: task.difficulty,
-                        status: task.status,
-                        failed: task.failed,
-                        overdue: task.overdue,
-                        progress: task.progress
-                    };
-                    tasks.push(formattedTask);
-                }
-            });
-            self.setState({
-                page: 'Kanban',
-                userEmail: email,
-                tasks: tasks
-            });
+        this.setState({
+            page: 'Kanban',
+            userEmail: email,
         });
-
     }
 
     render() {

@@ -4,7 +4,7 @@ exports.login = (req, res) => {
     let key = req.body.username;
     let found = 0;
     if (key.includes('@')) {
-        db.ref('/users').on('value', querySnapShot => {
+        db.ref('/users').once('value', querySnapShot => {
             querySnapShot.forEach((i) => {
                 let item = i.val();
                 if (item.email === key) {
@@ -19,7 +19,7 @@ exports.login = (req, res) => {
         });
     }
     else {
-        db.ref('/users').on('value', querySnapShot => {
+        db.ref('/users').once('value', querySnapShot => {
             querySnapShot.forEach((i) => {
                 let item = i.val();
                 if (item.username === key) {
@@ -41,7 +41,7 @@ exports.register = (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
     let valid = 1;
-    db.ref('/users').on('value', querySnapShot => {
+    db.ref('/users').once('value', querySnapShot => {
         querySnapShot.forEach((item) => {
             if (item.val().username === username && email === item.val().email) {
                 valid = 0;
