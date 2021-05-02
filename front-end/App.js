@@ -41,7 +41,9 @@ class App extends Component {
         console.log(page);
         if (page === "Import") {
             return (
-                <Import/>
+                <Import
+                    email={userEmail}
+                />
             );
         }
         else if (page === "Calendar") {

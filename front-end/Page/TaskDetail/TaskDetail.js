@@ -5,6 +5,16 @@ import TaskDetailStyles from "./TaskDetailStyle";
 class TaskDetail extends Component {
     constructor(props) {
         super(props);
+        let dateline = this.props.content.deadline.split("-");
+        let now = new Date(Date.now());
+        let year = now.getFullYear();
+        let month = now.getMonth();
+        let day = now.getDate();
+        if (dateline.length > 0) {
+            month = dateline[0];
+            day = dateline[1];
+            year = dateline[2];
+        }
         this.state = {
             mode: this.props.mode,
             content: this.props.content,
@@ -12,10 +22,11 @@ class TaskDetail extends Component {
             deadline: this.props.content.deadline,
             duration: this.props.content.duration,
             difficulty: this.props.content.difficulty,
-            year: 0,
-            month: 0,
-            day: 0
+            year: year,
+            month: month,
+            day: day
         }
+
     }
 
     render() {
