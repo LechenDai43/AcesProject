@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Text,View,TouchableOpacity,TextInput} from 'react-native';
 import {styles} from './stylesheet'
-import { vibrate } from './utils';
+import {Vibration} from 'react-native'
 
 const Init_work = '25';
 const Init_Break = '05';
@@ -10,7 +10,7 @@ const Work = 'Work';
 const Break = 'Break';
 const Start = 'Start';
 const Stop = 'Stop';
-
+let vibrate = () => Vibration.vibrate([500, 500, 500]);
 let interval = 0;
 
 export default class App extends React.Component {
@@ -91,7 +91,7 @@ export default class App extends React.Component {
     this.setupInteval();
   };
 
- 
+
   resetTimer = () => {
     const that = this;
     this.isRunning = false;
