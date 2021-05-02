@@ -1,8 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableHighlight} from 'react-native';
-import OriginalSchedule from "./Page/FakeData/OriginalSchedule";
-import OriginTasks from "./Page/FakeData/OriginTasks";
 import Footer from "./Page/Footer/Footer";
 import Kanban from "./Page/Kanban/Kanban";
 import Header from "./Page/Header/Header";
@@ -12,25 +10,16 @@ import Pomodoro from './Page/Pomodoro/pomodoro';
 import LogIn from "./Page/LogIn/LogIn";
 import Register from "./Page/Register/Register";
 import { registerRootComponent } from 'expo'; // import it explicitly
+import TaskService from "./Service/Task.service"
+import Create from "./Page/Create/Create";
 
 class App extends Component {
     constructor(props) {
         super(props);
 
-        let tasks = [];
-        for (let ii = 0; ii < OriginTasks.length; ii += 1) {
-            tasks.push(OriginTasks[ii]);
-        }
-
-        let schedule = [];
-        for (let ii = 0; ii < OriginalSchedule.length; ii += 1) {
-            schedule.push(OriginalSchedule[ii]);
-        }
-
         this.state = {
-            tasks: tasks,
-            schedule: schedule,
-            page: "LogIn"
+            page: "LogIn",
+            userEmail: "",
         };
     }
 
@@ -49,20 +38,27 @@ class App extends Component {
     }
 
     renderPage() {
-        let {page} = this.state;
+        let {page, userEmail} = this.state;
+        console.log(page);
         if (page === "Import") {
             return (
-                <Import/>
+                <Import
+                    email={userEmail}
+                />
             );
         }
         else if (page === "Calendar") {
             return (
-                <Gantt/>
+                <Gantt
+                    email={userEmail}
+                />
             );
         }
         else if (page === "Kanban") {
             return (
-                <Kanban/>
+                <Kanban
+                    email={userEmail}
+                />
             )
         }
         else if (page === "Timer") {
@@ -70,10 +66,12 @@ class App extends Component {
                 <Pomodoro/>
             )
         } 
-        else if(page == "LogIn") {
+        else if(page === "LogIn") {
             return (
                 <View style = {lstyles.container}>
-                    <LogIn/>
+                    <LogIn
+                        handler={(mail) => this.afterLogin(mail)}
+                    />
                     <TouchableHighlight
                         onPress = {()=> this.changePage("Register",-1)}
                     >
@@ -82,18 +80,50 @@ class App extends Component {
                 </View>
             )
         }
-        else if(page == "Register") {
+        else if(page === "Register") {
             return (
                 <Register
                     style = {lstyles.container}
+                    handler={(mail) => this.afterLogin(mail)}
                 />
             )
         }
+        else if (page === "Add") {
+            console.log(page);
+            return (
+                <Create
+                    email={userEmail}
+                    finisher={() => this.changePage("Kanban", -1)}
+                />
+            );
+        }
+
         else {
             return (
-                <Kanban/>
+                <Kanban
+                    email={userEmail}
+                />
             )
         }
+    }
+
+    renderFooterOrNot() {
+        let {page} = this.state;
+        if (page !== 'LogIn' && page !== 'Register') {
+            return (
+                <Footer
+                    redirect={(p) => this.changePage(p, -1)}
+                    page={page}
+                />
+            );
+        }
+    }
+
+    afterLogin(email) {
+        this.setState({
+            page: 'Kanban',
+            userEmail: email,
+        });
     }
 
     render() {
@@ -105,10 +135,7 @@ class App extends Component {
                     importHandler={() => this.changePage("Import", -1)}
                 />
                 {this.renderPage()}
-                <Footer
-                    redirect={(p) => this.changePage(p, -1)}
-                    page={page}
-                />
+                {this.renderFooterOrNot()}
             </View>
         );
     }

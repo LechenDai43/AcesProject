@@ -5,6 +5,7 @@ import TaskDetail from "../TaskDetail/TaskDetail";
 import ImportStyles from "./ImportStyle";
 import OriginTasks from "../FakeData/OriginTasks";
 import ImportedTasks from "../FakeData/ImportedTasks";
+import TaskService from "../../Service/Task.service";
 
 class Import extends Component {
     constructor(props) {
@@ -35,7 +36,7 @@ class Import extends Component {
                             ]}
                             containerStyle={{height: 40, width: 200}}
                             defaultValue={pickerValue}
-                           
+
                         />
                     </View>
                     <View >
@@ -101,36 +102,66 @@ class Import extends Component {
     }
 
     handleNextTask(content) {
-        let newTask = {
-            id: content.id,
-            title: content.title,
-            deadline: content.deadline,
-            duration: content.duration,
-            difficulty: content.difficulty,
-            failed: 0,
-            overdue: 0,
+        let {title, deadline, duration, difficulty} = content;
+        let dateline = deadline.split("-");
+        let now = new Date(Date.now());
+        let year = now.getFullYear();
+        let month = now.getMonth();
+        let day = now.getDate();
+        if (dateline.length > 0) {
+            month = dateline[0];
+            day = dateline[1];
+            year = dateline[2];
+        }
+        let data = {
+            day: day,
+            month: month,
+            year: year,
+            difficulty: difficulty,
+            duration: duration,
+            failed: -1,
+            overdue: -1,
             progress: 0,
-            status: "To-Do"
+            status: "To-Do",
+            title: title,
+            email: this.props.email
         };
-        OriginTasks.push(newTask);
+        console.log(data);
+        // connect backend api
+        let result = TaskService.createTask(data);
         let {pointer} = this.state;
         this.setState({pointer: pointer + 1});
         this.forceUpdate();
     }
 
     handleFinishTask(content) {
-        let newTask = {
-            id: content.id,
-            title: content.title,
-            deadline: content.deadline,
-            duration: content.duration,
-            difficulty: content.difficulty,
-            failed: 0,
-            overdue: 0,
+        let {title, deadline, duration, difficulty} = content;
+        let dateline = deadline.split("-");
+        let now = new Date(Date.now());
+        let year = now.getFullYear();
+        let month = now.getMonth();
+        let day = now.getDate();
+        if (dateline.length > 0) {
+            month = dateline[0];
+            day = dateline[1];
+            year = dateline[2];
+        }
+        let data = {
+            day: day,
+            month: month,
+            year: year,
+            difficulty: difficulty,
+            duration: duration,
+            failed: -1,
+            overdue: -1,
             progress: 0,
-            status: "To-Do"
+            status: "To-Do",
+            title: title,
+            email: this.props.email
         };
-        OriginTasks.push(newTask);
+        console.log(data);
+        // connect backend api
+        let result = TaskService.createTask(data);
         this.setState({
             pointer: -1,
             stack: [],

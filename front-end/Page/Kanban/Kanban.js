@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
-import OriginTasks from "../FakeData/OriginTasks";
 import KanbanTab from "./KanbanTab/KanbanTab";
 import KanbanUnprogressTask from "./KanbanUnprogressTask/KanbanUnprogressTask";
 import KanbanProgressTask from "./KanbanProgressTask/KanbanProgressTask";
@@ -8,6 +7,7 @@ import KanbanStyles from "./KanbanStyle";
 import KanbanTabBox from "./KanbanTabBox/KanbanTabBox";
 import KanbanTaskSimpleView from "./KanbanTaskSimpleView/KanbanTaskSimpleView";
 import { ScrollView} from 'react-native';
+import TaskService from "../../Service/Task.service"
 
 // These variables holds what tabs are progressed and what are not
 const unprogressedTab = new Set(["To-Do", "Done", "Requested", "Freeze"]);
@@ -30,6 +30,35 @@ class Kanban extends Component {
             listHeight: 0,
             lookingTas: 0
         }
+        this.tasks = [];
+    }
+
+    onUpdate() {
+        let result = TaskService.getTask({'email': this.props.email});
+        let self = this;
+        result.then((result_data) => {
+            let taskKeys = Object.keys(result_data.data);
+            let tasks = [];
+            taskKeys.forEach((key) => {
+                let task = result_data.data[key];
+                if (task.title !== 'Null') {
+                    console.log(typeof task.deadline.day);
+                    let formattedTask = {
+                        id: key,
+                        title: task.title,
+                        deadline: task.deadline.month.toString().concat("-").concat(task.deadline.day.toString()).concat("-").concat(task.deadline.year.toString()),
+                        duration: task.duration,
+                        difficulty: task.difficulty,
+                        status: task.status,
+                        failed: task.failed,
+                        overdue: task.overdue,
+                        progress: task.progress
+                    };
+                    tasks.push(formattedTask);
+                }
+            });
+            self.tasks = tasks;
+        });
     }
 
     // This renders the clickable tabs
@@ -57,6 +86,7 @@ class Kanban extends Component {
         let {currentTab} = this.state;
         // Prepare return variable
         let displayedTasks = [];
+        let OriginTasks = this.tasks;
 
         // If the tabs is not a progressed tab
         if (unprogressedTab.has(currentTab)) {
@@ -132,6 +162,7 @@ class Kanban extends Component {
     // This function renders the simple view of a task when necessary
     renderTaskSimpleView() {
 
+        let OriginTasks = this.tasks;
         // Get the id of the chosen task
         let {taskId} = this.state;
         // Prepare the target task
@@ -162,7 +193,7 @@ class Kanban extends Component {
     }
 
     render() {
-
+        this.onUpdate();
         return (
             <View style={[KanbanStyles.container]}>
                 <View style={[KanbanStyles.renderTabs]}>
@@ -217,6 +248,7 @@ class Kanban extends Component {
 
     // This handles the click of a task
     clickTaskHandler(key) {
+        let OriginTasks = this.tasks;
         let {mode} = this.state;
         if (mode === "More" || mode === "Transfer") {
             return null;
@@ -262,6 +294,7 @@ class Kanban extends Component {
 
     // This handles the click of tab boxes when the mode is transfer
     transferModeHandler (key) {
+        let OriginTasks = this.tasks;
         // Get the id of the chosen task
         let {taskId} = this.state;
         // Prepare the target task
@@ -285,28 +318,19 @@ class Kanban extends Component {
         });
 
         let oldStatus = OriginTasks[target].status;
+        let task_id = OriginTasks[target].id;
         // Set the status of that task to the corresponding key
-        OriginTasks[target].status = key;
-        // Change some other fields if necessary
-        if (key === "Done") {
-            OriginTasks[target].progress = OriginTasks[target].duration;
-        }
-        else if (key === "Failed") {
-            OriginTasks[target].failed = 1;
-        }
-        else if (key === "Overdue") {
-            OriginTasks[target].failed = 1;
-            OriginTasks[target].overdue = 1;
-        }
-        else if (key === "Freeze" || key === "Requested") {
-            OriginTasks[target].duration = 0;
-            OriginTasks[target].progress = 0;
-        }
-
+        console.log(this.props.email)
+        let data = {
+            email: this.props.email,
+            task_id: task_id,
+            status: key,
+            duration: OriginTasks[target].duration
+        };
+        let result = TaskService.setTaskStatus(data);
         if (oldStatus !== key) {
             this.closeTaskSimpleView();
         }
-
     }
 
     // This handles if the clicked task is to be transferred
@@ -316,6 +340,7 @@ class Kanban extends Component {
 
     // This close opened task simple view
     closeTaskSimpleView() {
+        console.log("triger close task simple view")
         this.setState({
             mode: "Unknown",
             taskId: -1,
