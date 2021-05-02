@@ -10,6 +10,7 @@ import LogIn from "./Page/LogIn/LogIn";
 import Register from "./Page/Register/Register";
 import { registerRootComponent } from 'expo'; // import it explicitly
 import TaskService from "./Service/Task.service"
+import Create from "./Page/Create/Create";
 
 class App extends Component {
     constructor(props) {
@@ -37,9 +38,12 @@ class App extends Component {
 
     renderPage() {
         let {page, userEmail} = this.state;
+        console.log(page);
         if (page === "Import") {
             return (
-                <Import/>
+                <Import
+                    email={userEmail}
+                />
             );
         }
         else if (page === "Calendar") {
@@ -78,9 +82,20 @@ class App extends Component {
                 />
             )
         }
+        else if (page === "Add") {
+            console.log(page);
+            return (
+                <Create
+                    email={userEmail}
+                    finisher={() => this.changePage("Kanban", -1)}
+                />
+            );
+        }
         else {
             return (
-                <Kanban/>
+                <Kanban
+                    email={userEmail}
+                />
             )
         }
     }

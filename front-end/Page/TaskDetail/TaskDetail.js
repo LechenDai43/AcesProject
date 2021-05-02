@@ -5,6 +5,16 @@ import TaskDetailStyles from "./TaskDetailStyle";
 class TaskDetail extends Component {
     constructor(props) {
         super(props);
+        let dateline = this.props.content.deadline.split("-");
+        let now = new Date(Date.now());
+        let year = now.getFullYear();
+        let month = now.getMonth();
+        let day = now.getDate();
+        if (dateline.length > 0) {
+            month = dateline[0];
+            day = dateline[1];
+            year = dateline[2];
+        }
         this.state = {
             mode: this.props.mode,
             content: this.props.content,
@@ -12,10 +22,11 @@ class TaskDetail extends Component {
             deadline: this.props.content.deadline,
             duration: this.props.content.duration,
             difficulty: this.props.content.difficulty,
-            year: 0,
-            month: 0,
-            day: 0
+            year: year,
+            month: month,
+            day: day
         }
+
     }
 
     render() {
@@ -88,23 +99,23 @@ class TaskDetail extends Component {
                         <View>
                             <Text style={TaskDetailStyles.tasktext}>Year:</Text>
                             <TextInput
-                                onChangeText={(t) => this.setState({year: t})}
+                                onChangeText={(t) => {this.setState({year: t}); console.log(this.state)}}
                                 keyboardType="numeric"
-                                value={year}
+                                defaultValue={year}
                                 style={TaskDetailStyles.tasktext}
                             />
                             <Text style={TaskDetailStyles.tasktext}>Month:</Text>
                             <TextInput
                                 onChangeText={(t) => this.setState({month: t})}
                                 keyboardType="numeric"
-                                value={month}
+                                defaultValue={month}
                                 style={TaskDetailStyles.tasktext}
                             />
                             <Text style={TaskDetailStyles.tasktext}>Day:</Text>
                             <TextInput
                                 onChangeText={(t) => this.setState({day: t})}
                                 keyboardType="numeric"
-                                value={day}
+                                defaultValue={day}
                                 style={TaskDetailStyles.tasktext}
                             />
                         </View>
@@ -113,13 +124,13 @@ class TaskDetail extends Component {
                         <Text style={TaskDetailStyles.tasktext}>Estimate Time:</Text>
                         <TextInput
                             onChangeText={(t) => this.setState({duration: t})}
-                            value={content.duration}
+                            defaultValue={content.duration}
                             style={TaskDetailStyles.tasktext}
                         />
                         <Text style={TaskDetailStyles.tasktext}>Estimate Difficulty:</Text>
                         <TextInput
                             onChangeText={(t) => this.setState({difficulty: t})}
-                            value={content.difficulty}
+                            defaultValue={content.difficulty}
                             style={TaskDetailStyles.tasktext}
                         />
                     </View>
@@ -142,9 +153,11 @@ class TaskDetail extends Component {
     handleSave() {
         let {title, content, duration, difficulty, year, month, day} = this.state;
         let deadline = month + "-" + day + "-" + year;
+        console.log(deadline);
         content.title = title;
         content.duration = duration;
         content.difficulty = difficulty;
+        content.deadline = deadline;
         this.setState({
             content: content,
             deadline: deadline,
