@@ -18,6 +18,32 @@ class Gantt extends Component {
             dailyMode: 0
         }
         this.schedule = [];
+        this.tasks = [];
+        let result = TaskService.getTask({'email': this.props.email});
+        let self = this;
+        result.then((result_data) => {
+            let taskKeys = Object.keys(result_data.data);
+            let tasks = [];
+            taskKeys.forEach((key) => {
+                let task = result_data.data[key];
+                if (task.title !== 'Null') {
+                    console.log(typeof task.deadline.day);
+                    let formattedTask = {
+                        id: key,
+                        title: task.title,
+                        deadline: task.deadline.month.toString().concat("-").concat(task.deadline.day.toString()).concat("-").concat(task.deadline.year.toString()),
+                        duration: task.duration,
+                        difficulty: task.difficulty,
+                        status: task.status,
+                        failed: task.failed,
+                        overdue: task.overdue,
+                        progress: task.progress
+                    };
+                    tasks.push(formattedTask);
+                }
+            });
+            self.tasks = tasks;
+        });
     }
 
     updateSchedule(d, m, y) {
@@ -102,6 +128,8 @@ class Gantt extends Component {
                     day={day}
                     hour={hour}
                     return={() => this.setOffHourly()}
+                    task={this.tasks}
+                    email={this.props.email}
                 />
             );
         }

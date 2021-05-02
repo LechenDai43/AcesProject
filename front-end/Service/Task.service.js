@@ -46,7 +46,7 @@ class TaskService {
     }
 
     removeDailySchedule(data) {
-        return http.delete("/aces/task/schedule/time", data);
+        return http.put("/aces/task/schedule/time/delete", data);
     }
 
     getTaskDueDate(data) {

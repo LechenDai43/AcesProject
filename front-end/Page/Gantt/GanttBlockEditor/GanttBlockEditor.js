@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
 import GanttBlockEditorStyles from "./GanttBlockEditorStyle";
-import OriginTasks from "../../FakeData/OriginTasks";
-import OriginalSchedule from "../../FakeData/OriginalSchedule";
+import TaskService from "../../../Service/Task.service"
 
 class GanttBlockEditor extends Component {
     constructor(props) {
@@ -19,7 +18,7 @@ class GanttBlockEditor extends Component {
     renderContent() {
         if (this.props.booked === 1) {
             return (
-                <Text style={GanttBlockEditorStyles.blocktext}> 
+                <Text style={GanttBlockEditorStyles.blocktext}>
                     {this.props.content.title}
                 </Text>
             );
@@ -44,13 +43,14 @@ class GanttBlockEditor extends Component {
 
     renderTaskList() {
         let availableTasks = [];
+        let OriginTasks =  this.props.task;
         for (let i = 0; i < OriginTasks.length; i++) {
             if (OriginTasks[i].status === "To-Do" || OriginTasks[i].status === "In Progress") {
                 availableTasks.push(
                     (<TouchableHighlight
                         onPress={() => this.handleUnsavedChange(OriginTasks[i].title, OriginTasks[i].id)}
                     >
-                        <View style={GanttBlockEditorStyles.buttoneditlist}> 
+                        <View style={GanttBlockEditorStyles.buttoneditlist}>
                             <Text style={GanttBlockEditorStyles.blocktext}>
                                 {OriginTasks[i].title}
                             </Text>
@@ -94,6 +94,7 @@ class GanttBlockEditor extends Component {
 
     handleEditPressed () {
         let {mode} = this.state;
+        console.log(mode);
         if (mode === "View") {
             this.setState({
                 mode: "Edit"
@@ -102,22 +103,47 @@ class GanttBlockEditor extends Component {
         else {
             let {unsavedTitle, unsavedId} = this.state;
             let {title} = this.state;
-            if (this.props.booked === 1 && unsavedId > 0) {
-                this.props.content.title = unsavedTitle;
-                this.props.content.taskId = unsavedId;
-                title = unsavedTitle;
-            }
-            else if (this.props.booked === 0 && unsavedId > 0) {
-                OriginalSchedule.push({
+            console.log(unsavedTitle);
+            if (this.props.booked === 1 && unsavedId !== 0 && !(unsavedId < 0)) {
+                // update
+                let data  = {
+                    year: this.props.year,
+                    month: this.props.month,
+                    day: this.props.day,
+                    hour: this.props.hour,
+                    email: this.props.email,
                     title: unsavedTitle,
-                    taskId: unsavedId,
-                    date: new Date(this.props.year, this.props.month, this.props.day, this.props.hour)
-                });
-                title = unsavedTitle;
+                    task_id: unsavedId
+                };
+                console.log(data);
+                let result = TaskService.alterDailySchedule(data);
+                this.setState({title: unsavedTitle});
+            }
+            else if (this.props.booked === 0 && unsavedId !== 0 && !(unsavedId < 0)) {
+                let data  = {
+                    year: this.props.year,
+                    month: this.props.month,
+                    day: this.props.day,
+                    hour: this.props.hour,
+                    email: this.props.email,
+                    title: unsavedTitle,
+                    task_id: unsavedId
+                };
+                console.log(data);
+                let result = TaskService.addDailySchedule(data);
+                this.setState({title: unsavedTitle});
             }
             else if (this.props.booked === 1 && unsavedId < 0) {
-                this.props.content.date = new Date(1, 1, 1, 1);
-                title = 0;
+                // delete
+                let data = {
+                    year: this.props.year,
+                    month: this.props.month,
+                    day: this.props.day,
+                    hour: this.props.hour,
+                    email: this.props.email
+                };
+                let result = TaskService.removeDailySchedule(data);
+                this.setState({title: null})
 
             }
             this.setState({
@@ -137,6 +163,7 @@ class GanttBlockEditor extends Component {
     }
 
     handleUnsavedChange(nTitle, nId) {
+        console.log(nTitle);
         this.setState({
             unsavedTitle: nTitle,
             unsavedId: nId

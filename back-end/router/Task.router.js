@@ -16,7 +16,7 @@ module.exports = app => {
     router.put("/schedule/time/get", task.getTimeSlots);
     router.put("/schedule/time", task.changeSlotStatus);
     router.post("/schedule/time", task.addTimeSlots);
-    router.delete("/schedule/time", task.deleteTimeSlots);
+    router.put("/schedule/time/delete", task.deleteTimeSlots);
 
     router.put("/due/get", task.getDueDate);
     router.put("/due", task.setDueDate);

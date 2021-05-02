@@ -149,6 +149,7 @@ exports.getTimeSlots = (req, res) => {
 }
 
 exports.addTimeSlots = (req, res) => {
+    console.log(req.body);
     let email = req.body.email;
     let header = email.replace('@', 'at').replace('.', 'dot');
     let newItem = {
@@ -167,10 +168,12 @@ exports.addTimeSlots = (req, res) => {
 }
 
 exports.deleteTimeSlots = (req, res) => {
+    console.log(req.body)
     let email = req.body.email;
     let day = req.body.day;
     let month = req.body.month;
     let year = req.body.year;
+    let hour = req.body.hour;
     let header = email.replace('@', 'at').replace('.', 'dot');
     db.ref('/' + header + '_schedule').once('value', querySnapShot => {
         let data = querySnapShot.val();
@@ -179,19 +182,24 @@ exports.deleteTimeSlots = (req, res) => {
         keys.forEach((element) => {
             let item = data[element];
             let time = item.time;
-            if (time.day === day && time.month === month && time.year === year) {
+            if (time.day === day && time.month === month && time.year === year && time.hour === hour) {
                 key = element;
             }
         });
-        db.ref('/' + header + "_schedule/" + key).remove();
+        console.log(key);
+        if (key !== '') {
+            db.ref('/' + header + "_schedule/" + key).remove();
+        }
     });
 }
 
 exports.changeSlotStatus = (req, res) => {
+    console.log(req.body);
     let email = req.body.email;
     let day = req.body.day;
     let month = req.body.month;
     let year = req.body.year;
+    let hour = req.body.hour;
     let header = email.replace('@', 'at').replace('.', 'dot');
     db.ref('/' + header + '_schedule').once('value', querySnapShot => {
         let data = querySnapShot.val();
@@ -200,12 +208,13 @@ exports.changeSlotStatus = (req, res) => {
         keys.forEach((element) => {
             let item = data[element];
             let time = item.time;
-            if (time.day === day && time.month === month && time.year === year) {
+            if (time.day === day && time.month === month && time.year === year && time.hour === hour) {
                 key = element;
             }
         });
         let rootRef = db.ref('/' + header + "_schedule/" + key + "/task");
-        rootRef.child('id').set(req.body.taks_id);
+        rootRef.child('id').set(req.body.task_id);
+        rootRef.child('title').set(req.body.title);
     });
 }
 
