@@ -3,8 +3,8 @@ import { View, TouchableHighlight, Text } from 'react-native';
 import CalendarPicker from "react-native-calendar-picker";
 import GanttStyles from "./GanttStyle";
 import GanttDailyView from "./GanttDailyView/GanttDailyView";
-import OriginalSchedule from "../FakeData/OriginalSchedule";
 import GanttBlockEditor from "./GanttBlockEditor/GanttBlockEditor";
+import TaskService from "../../Service/Task.service"
 
 const months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 class Gantt extends Component {
@@ -20,7 +20,38 @@ class Gantt extends Component {
         this.schedule = [];
     }
 
+    updateSchedule(d, m, y) {
+        let {day, month, year} = this.state;
+        if (d > 0 && m > 0 && y > 0) {
+            day = d;
+            month = m;
+            year = y;
+        }
+        if (day > 0 && month > 0 && year > 0) {
+            let data  = {
+                email: this.props.email,
+                day: day,
+                month: month,
+                year: year
+            };
+            let result = TaskService.getDailySchedule(data);
+            result.then((result_data) => {
+                let slots = [];
+                result_data.data.forEach((element) => {
+                    let slot = {
+                        id: element.task.id,
+                        title: element.task.title,
+                        date: new Date(element.time.year, element.time.month, element.time.day, element.time.hour)
+                    };
+                    slots.push(slot);
+                })
+                this.schedule = slots;
+            });
+        }
+    }
+
     renderDailyCalender() {
+        let OriginalSchedule = this.schedule;
         let {dailyMode} = this.state;
         if (dailyMode === 0) {
             return (
@@ -96,13 +127,25 @@ class Gantt extends Component {
             month += 1;
         }
 
-        this.setState({
-            year: year,
-            month: month,
-            day: day,
-            dailyMode: 1
-        });
+
+        this.updateSchedule(day, month, year);
+        let self = this;
+        this.sleep(100).then( () => {
+                self.setState({
+                    year: year,
+                    month: month,
+                    day: day,
+                    dailyMode: 1
+                });
+            }
+        );
+
     }
+
+    sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
 
     selectHour (hour) {
         this.setState({

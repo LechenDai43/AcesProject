@@ -154,7 +154,7 @@ exports.addTimeSlots = (req, res) => {
     let newItem = {
         'task': {
             'id': req.body.task_id,
-            'table': header + '_task'
+            'title': req.body.title
         },
         'time': {
             'day': req.body.day,

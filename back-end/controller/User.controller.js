@@ -75,7 +75,7 @@ exports.register = (req, res) => {
         db.ref('/' + header + "_schedule").push({
             'task': {
                 'id': -1,
-                'table': header + "_task"
+                'title': 'Null'
             },
             'time': {
                 'day': -1,
