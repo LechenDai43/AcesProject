@@ -22,7 +22,7 @@ class Header extends Component {
                 >
                     <TouchableHighlight
                         style={[HeaderStyles.rightTouch]}
-                        onPress={() => this.props.addHandler}
+                        onPress={() => this.props.addHandler()}
                     >
                         <Text>
                             Add Tasks

@@ -88,23 +88,23 @@ class TaskDetail extends Component {
                         <View>
                             <Text style={TaskDetailStyles.tasktext}>Year:</Text>
                             <TextInput
-                                onChangeText={(t) => this.setState({year: t})}
+                                onChangeText={(t) => {this.setState({year: t}); console.log(this.state)}}
                                 keyboardType="numeric"
-                                value={year}
+                                defaultValue={year}
                                 style={TaskDetailStyles.tasktext}
                             />
                             <Text style={TaskDetailStyles.tasktext}>Month:</Text>
                             <TextInput
                                 onChangeText={(t) => this.setState({month: t})}
                                 keyboardType="numeric"
-                                value={month}
+                                defaultValue={month}
                                 style={TaskDetailStyles.tasktext}
                             />
                             <Text style={TaskDetailStyles.tasktext}>Day:</Text>
                             <TextInput
                                 onChangeText={(t) => this.setState({day: t})}
                                 keyboardType="numeric"
-                                value={day}
+                                defaultValue={day}
                                 style={TaskDetailStyles.tasktext}
                             />
                         </View>
@@ -113,13 +113,13 @@ class TaskDetail extends Component {
                         <Text style={TaskDetailStyles.tasktext}>Estimate Time:</Text>
                         <TextInput
                             onChangeText={(t) => this.setState({duration: t})}
-                            value={content.duration}
+                            defaultValue={content.duration}
                             style={TaskDetailStyles.tasktext}
                         />
                         <Text style={TaskDetailStyles.tasktext}>Estimate Difficulty:</Text>
                         <TextInput
                             onChangeText={(t) => this.setState({difficulty: t})}
-                            value={content.difficulty}
+                            defaultValue={content.difficulty}
                             style={TaskDetailStyles.tasktext}
                         />
                     </View>
@@ -142,9 +142,11 @@ class TaskDetail extends Component {
     handleSave() {
         let {title, content, duration, difficulty, year, month, day} = this.state;
         let deadline = month + "-" + day + "-" + year;
+        console.log(deadline);
         content.title = title;
         content.duration = duration;
         content.difficulty = difficulty;
+        content.deadline = deadline;
         this.setState({
             content: content,
             deadline: deadline,
