@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {View, TouchableHighlight, Text, TextInput} from 'react-native';
 import TaskDetail from "../TaskDetail/TaskDetail";
+import TaskService from "../../Service/Task.service"
 
 class Create extends Component {
     constructor(props) {
@@ -61,10 +62,12 @@ class Create extends Component {
         };
         console.log(data);
         // connect backend api
+        let result = TaskService.createTask(data);
+        this.props.finisher();
     }
 
     handleDeleteTask() {
-
+        this.props.finisher();
     }
 }
 

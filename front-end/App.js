@@ -85,6 +85,7 @@ class App extends Component {
             return (
                 <Create
                     email={userEmail}
+                    finisher={() => this.changePage("Kanban", -1)}
                 />
             );
         }
