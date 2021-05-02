@@ -93,7 +93,9 @@ class App extends Component {
         }
         else {
             return (
-                <Kanban/>
+                <Kanban
+                    email={userEmail}
+                />
             )
         }
     }
