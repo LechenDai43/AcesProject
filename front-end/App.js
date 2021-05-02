@@ -6,6 +6,7 @@ import Kanban from "./Page/Kanban/Kanban";
 import Header from "./Page/Header/Header";
 import Gantt from "./Page/Gantt/Gantt";
 import Import from "./Page/Import/Import";
+import Pomodoro from './Page/Pomodoro/pomodoro';
 import LogIn from "./Page/LogIn/LogIn";
 import Register from "./Page/Register/Register";
 import { registerRootComponent } from 'expo'; // import it explicitly
@@ -60,6 +61,11 @@ class App extends Component {
                 />
             )
         }
+        else if (page === "Timer") {
+            return (
+                <Pomodoro/>
+            )
+        } 
         else if(page === "LogIn") {
             return (
                 <View style = {lstyles.container}>
@@ -91,6 +97,7 @@ class App extends Component {
                 />
             );
         }
+
         else {
             return (
                 <Kanban
