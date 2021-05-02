@@ -27,6 +27,7 @@ class LogIn extends Component{
                     />
                 </View>
                 <View>
+                <View>
                     <TouchableHighlight
                         onPress={() => this.handleSubmit()}
                         style ={LogInStyles.loginsubmit}
@@ -34,6 +35,7 @@ class LogIn extends Component{
                         <Text style={LogInStyles.logintext}>Submit</Text>
                     </TouchableHighlight>
                     <Text>{this.state.text}</Text>
+                </View>
                 </View>
             </View>
         );
