@@ -1,6 +1,7 @@
 const db = require("../configure/db.configure").db;
 
 exports.login = (req, res) => {
+    console.log(req.body);
     let key = req.body.username;
     let found = 0;
     if (key.includes('@')) {

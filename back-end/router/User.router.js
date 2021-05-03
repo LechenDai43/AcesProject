@@ -3,7 +3,8 @@ module.exports = app => {
     let router = require("express").Router();
 
     router.put("/", user.login);
-    router.post("/", user.register);
+    router.post("/", user.register); 
+    router.get("/:key", (req, res)=>{res.send("You are here")});
 
     app.use("/aces/user", router);
 }
